@@ -17,7 +17,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => \fake()->name(),
+            'parent_id' => \fake()->boolean() ? \rand(1, 4) : null,
         ];
     }
 }

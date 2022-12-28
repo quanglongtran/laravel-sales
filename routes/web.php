@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\Usercontroller;
 use App\Models\User;
@@ -41,5 +42,6 @@ Auth::routes();
 
 Route::resource('role', RoleController::class);
 Route::resource('user', Usercontroller::class);
+Route::resource('category', CategoryController::class);
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
