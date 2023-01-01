@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\Usercontroller;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,7 @@ use Intervention\Image\Facades\Image;
 */
 
 Route::any('test', function (Request $request) {
-    return Storage::url("public/" . User::find(11)->images->url);
+    return Product::find(8)->test();
 });
 
 Route::get('/', function () {
@@ -43,5 +45,6 @@ Auth::routes();
 Route::resource('role', RoleController::class);
 Route::resource('user', Usercontroller::class);
 Route::resource('category', CategoryController::class);
+Route::resource('product', ProductController::class);
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

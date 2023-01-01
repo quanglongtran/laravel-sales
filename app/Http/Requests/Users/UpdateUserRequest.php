@@ -45,8 +45,8 @@ class UpdateUserRequest extends FormRequest
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 notify($error, null, 'error');
-                return;
             }
+            return;
         }
 
         \notify('Update user successfully', \null, 'success');

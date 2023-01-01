@@ -45,8 +45,8 @@ class CreateUserRequest extends FormRequest
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 \notify($error, null, 'error');
-                return;
             }
+            return;
         }
 
         \notify('Cerate user successfully', \null, 'success');

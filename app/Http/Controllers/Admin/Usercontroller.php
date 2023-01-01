@@ -54,7 +54,7 @@ class Usercontroller extends Controller
     public function store(CreateUserRequest $request)
     {
         $user = $this->user->create(\array_merge($request->all(), ['password' => \bcrypt($request->password)]));
-        $path_avatar = $this->user->storeImage($request);
+        $path_avatar = $this->user->storeImage($request, 'users');
         $user->images()->create(['url' => $path_avatar]);
         $user->assignRole($request->role_ids);
 

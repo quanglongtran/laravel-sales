@@ -12,7 +12,9 @@
                 @csrf
                 @method('PUT')
 
-                <div class="preview" style="width: 200px; height: 200px;"></div>
+                <div class="preview" style="width: 200px; height: 200px;"
+                    default="{{ isset($user->images->url) ? asset("storage/{$user->images->url}") : asset('storage/uploads/users/default-user.webp') }}">
+                </div>
 
                 <div class="input-group input-group-static mb-4">
                     <label>Name</label>
@@ -125,8 +127,6 @@
     </div>
 
     <script>
-        appendPreviewFrame(document.getElementsByClassName('preview')[0], 'avatar',
-            '{{ isset($user->images->url) ? asset("storage/{$user->images->url}") : asset('storage/upload/users/default-user.webp') }}'
-        );
+        appendPreviewFrame(document.getElementsByClassName('preview')[0], 'avatar');
     </script>
 @endsection

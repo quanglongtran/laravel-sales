@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRoleRequest extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the product is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        return \true;
+        return true;
     }
 
     /**
@@ -24,9 +24,13 @@ class UpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
+            'image' => 'image',
             'name' => 'required',
-            'display_name' => 'required',
-            'group' => 'required',
+            'description' => 'required',
+            'sale' => 'required',
+            'price' => 'required',
+            'category_ids' => 'required|array',
+            'details' => 'required',
         ];
     }
 
@@ -40,11 +44,11 @@ class UpdateRoleRequest extends FormRequest
     {
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
-                \notify($error, null, 'error');
+                notify($error, null, 'error');
             }
             return;
         }
 
-        \notify('Update role successfully', \null, 'success');
+        \notify('Update product successfully', \null, 'success');
     }
 }

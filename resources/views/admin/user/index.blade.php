@@ -26,7 +26,7 @@
             @foreach ($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td><img src="{{ isset($user->images->url) ? "storage/{$user->images->url}" : asset('storage/upload/users/default-user.webp') }}"
+                    <td><img src="{{ isset($user->images->url) ? "storage/{$user->images->url}" : asset('storage/uploads/users/default-user.webp') }}"
                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover">
                     </td>
                     <td>{{ $user->name }}</td>

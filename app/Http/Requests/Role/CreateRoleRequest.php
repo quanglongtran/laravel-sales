@@ -42,6 +42,9 @@ class CreateRoleRequest extends FormRequest
             foreach ($validator->errors()->all() as $error) {
                 \notify($error, null, 'error');
             }
+            return;
         }
+
+        \notify('Create role successfully', null, 'success');
     }
 }
