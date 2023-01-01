@@ -60,11 +60,13 @@
     }
 
     .preview__uploadInput-{{ $module }} {
-        position: relative;
-        top: -62px;
-        left: 0;
+        position: absolute;
+        /* background-color: red; */
         width: 100%;
         height: 100%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         opacity: 0;
     }
 
@@ -99,7 +101,8 @@
 
 
 <script>
-    function appendPreviewFrame(nodeElement, inputName = '', src) {
+    function appendPreviewFrame(nodeElement, inputName = '') {
+
         $(nodeElement).append(`
             <label class="preview__frame-{{ $module }}">
                 <div class="preview__center-{{ $module }}">
@@ -115,12 +118,11 @@
                     {{-- <button type="button" class="preview__btn-{{ $module }}">Upload file</button> --}}
 
                 </div>
-                <img class="preview__img-{{ $module }}" style="z-index: 0" src="${src}">
+                <img class="preview__img-{{ $module }}" style="z-index: 0" src="${$(nodeElement).attr('default') ?? ''}">
             </label>
         `);
 
-
-        if (src) {
+        if ($(nodeElement).attr('default')) {
             show{{ $module }}($('.img-{{ $module }}'))
         }
     }
@@ -144,7 +146,6 @@
     $(() => {
         $('input[type=file].img-{{ $module }}').on('change', function() {
             show{{ $module }}($(this));
-            console.log(this.files[0], $(this).attr('name'))
         });
     })
 </script>

@@ -2,66 +2,98 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Storage;
+use Exception;
 use Intervention\Image\Facades\Image;
 
 trait HandleImageUpLoad
 {
-    protected string $path = 'upload/users';
+    private string $path = 'uploads';
+    private array $requestNames = ['avatar', 'image'];
 
     /**
      * Store an user image.
      * 
      * @param \Illuminate\Http\Request $request
+     * @param string folder
      * @return string
      */
-    function storeImage($request)
+    function storeImage($request, string $folder)
     {
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->file('avatar');
-            $path = "$this->path/$this->id_" . time() . "{$avatar->getClientOriginalName()}";
+        if ($avatar = $this->checkValidRequest($request)) {
+            $path = "$this->path/$folder/$this->id_" . time() . "{$avatar->getClientOriginalName()}";
             Image::make($avatar)->fit(300)->save("storage/$path");
+            $this->savePath($path);
             return $path;
         }
-
-        throw new \Exception('An error occurred while uploading the image at: ' . __FILE__);
     }
 
     /**
-     * Update an user image.
+     * Update an image.
      * 
      * @param \Illuminate\Http\Request $request
+     * @param string $folder
      * @return string
      */
-    public function updateImage($request)
+    public function updateImage($request, string $folder)
     {
-        $path = $this->storeImage($request);
-        $image = $this->images;
+        if ($this->checkValidRequest($request)) {
+            $this->deleteImage();
 
-        if (isset($image->url)) {
-            $this->deleteImage($image->url);
+            $path = $this->storeImage($request, $folder);
+            return $path;
         }
-
-        $this->images()->create(['url' => $path]);
-
-        return ($path);
     }
 
     /**
-     * Delete an user image
+     * Delete an image
      * 
-     * @param string $name
+     * @return void
+     * 
      */
-    public function deleteImage(string $name)
+    public function deleteImage()
     {
-        if (\file_exists(\public_path('storage/' . $name))) {
-            \unlink('storage/' . $name);
-        }
-
         if (isset($this->images->url)) {
+            $name = $this->images->url;
+            if (\file_exists(\public_path('storage/' . $name))) {
+                \unlink('storage/' . $name);
+            }
+
             $this->images()->delete();
         }
+    }
 
-        return $this;
+    /**
+     * Save path to database
+     * 
+     * @param string $path
+     */
+    private function savePath(string $path)
+    {
+        try {
+            $this->images()->create(['url' => $path]);
+        } catch (\Exception) {
+            throw new Exception('You must call this method from valid model!!');
+        }
+    }
+
+    /**
+     * Check if request is valid.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return Request|bool
+     */
+    private function checkValidRequest($request)
+    {
+        foreach ($request->allFiles() as $key => $file) {
+            if (\collect($this->requestNames)->contains($key)) {
+                if (!is_null($this->id)) {
+                    return $request->file($key);
+                }
+
+                throw new \Exception('You must call this method from valid model!!');
+            }
+        }
+
+        return false;
     }
 }

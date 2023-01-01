@@ -43,6 +43,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('admin/assets/css/material-dashboard.css?v=3.0.2') }}" rel="stylesheet" />
+    @yield('styles')
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -586,6 +587,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('admin/assets/js/material-dashboard.min.js?v=3.0.2') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>
