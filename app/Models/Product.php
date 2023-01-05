@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\ProductCollection;
 use App\Traits\HandleImageUpLoad;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,17 @@ class Product extends Model
         'sale',
         'price'
     ];
+
+    /**
+     * Custom collection
+     *
+     * @param  mixed $models
+     * @return void
+     */
+    public function newCollection(array $models = [])
+    {
+        return new ProductCollection($models);
+    }
 
     public function details()
     {
@@ -37,8 +49,8 @@ class Product extends Model
         return $this->categories()->sync($categoryIds);
     }
 
-    public function test()
+    public function getBy($dataSearch, $categoryId)
     {
-        return $this->details()->test();
+        return $this->with('images')->whereHas('categories', fn ($q) => $q->where('category_id', $categoryId))->paginate();
     }
 }

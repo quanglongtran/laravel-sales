@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\ComposerServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -204,6 +205,9 @@ return [
         //intervention image
         Intervention\Image\ImageServiceProvider::class,
 
+        //DebuggerServiceProvider
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
@@ -219,7 +223,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ])->toArray(),
 
 ];

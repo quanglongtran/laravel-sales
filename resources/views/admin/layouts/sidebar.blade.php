@@ -14,8 +14,8 @@
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeis('dashboard') ? 'active bg-gradient-primary' : '' }}"
-                    href="{{ route('dashboard') }}">
+                <a class="nav-link text-white {{ request()->routeis('admin.dashboard') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.dashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">dashboard</i>
                     </div>
@@ -23,8 +23,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeis('role.*') ? 'active bg-gradient-primary' : '' }}"
-                    href="{{ route('role.index') }}">
+                <a class="nav-link text-white {{ request()->routeis('admin.role.*') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.role.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">table_view</i>
                     </div>
@@ -32,8 +32,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeis('user.*') ? 'active bg-gradient-primary' : '' }}"
-                    href="{{ route('user.index') }}">
+                <a class="nav-link text-white {{ request()->routeis('admin.user.*') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.user.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">receipt_long</i>
                     </div>
@@ -41,8 +41,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeis('category.*') ? 'active bg-gradient-primary' : '' }}"
-                    href="{{ route('category.index') }}">
+                <a class="nav-link text-white {{ request()->routeis('admin.category.*') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.category.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
                     </div>
@@ -50,12 +50,21 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->routeis('product.*') ? 'active bg-gradient-primary' : '' }}"
-                    href="{{ route('product.index') }}">
+                <a class="nav-link text-white {{ request()->routeis('admin.product.*') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.product.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">view_in_ar</i>
                     </div>
                     <span class="nav-link-text ms-1">Products</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->routeis('admin.coupon.*') ? 'active bg-gradient-primary' : '' }}"
+                    href="{{ route('admin.coupon.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">view_in_ar</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Coupon</span>
                 </a>
             </li>
         </ul>
