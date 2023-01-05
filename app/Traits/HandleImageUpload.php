@@ -20,7 +20,7 @@ trait HandleImageUpLoad
     function storeImage($request, string $folder)
     {
         if ($avatar = $this->checkValidRequest($request)) {
-            $path = "$this->path/$folder/$this->id_" . time() . "{$avatar->getClientOriginalName()}";
+            $path = "$this->path/$folder/{$this->id}_" . time() . "{$avatar->getClientOriginalName()}";
             Image::make($avatar)->fit(300)->save("storage/$path");
             $this->savePath($path);
             return $path;

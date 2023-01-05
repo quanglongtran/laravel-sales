@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\CategoryCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,12 +15,23 @@ class Category extends Model
         'parent_id'
     ];
 
+    /**
+     * Custom collection
+     *
+     * @param  array $models
+     * @return CategoryCollection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new CategoryCollection($models);
+    }
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
-    public function children()
+    public function childrens()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
@@ -31,6 +43,11 @@ class Category extends Model
 
     public function getParents()
     {
-        return Category::whereNull('parent_id')->get(['id', 'name']);
+        return Category::with('childrens')->whereNull('parent_id')->get(['id', 'name']);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

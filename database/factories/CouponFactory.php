@@ -17,7 +17,10 @@ class CouponFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => 'Coupon ' . \fake()->unique()->name(),
+            'type' => 'money',
+            'value' => 20,
+            'expired' => \now()->addDays(\random_int(1, 7)),
         ];
     }
 }

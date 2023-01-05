@@ -1,5 +1,4 @@
-import jQuery from "jquery";
-const $ = jQuery;
+import $ from "jquery";
 
 appendPreviewFrame(document.getElementsByClassName("preview")[0], "image");
 
