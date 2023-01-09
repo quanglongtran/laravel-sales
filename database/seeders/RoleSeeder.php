@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder
         $superAdmin = User::whereEmail('admin@gmail.com')->first();
 
         if (!$superAdmin) {
-            $superAdmin = User::factory()->create(['email' => 'admin@gmail.com']);
+            $superAdmin = User::factory()->create(['email' => 'admin@gmail.com', 'name' => 'Super Admin']);
         }
         $superAdmin->assignRole('super-admin');
 

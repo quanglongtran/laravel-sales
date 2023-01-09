@@ -13,6 +13,18 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        .swal2-image {
+            border-radius: 4px
+        }
+
+        .btn {
+            border-radius: 2px;
+        }
+
+        .btn:not(:last-child) {
+            margin-right: 30px
+        }
     </style>
 @endsection
 @section('content')
@@ -34,7 +46,7 @@
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner border">
                         <div class="carousel-item active">
-                            <img class="w-100 h-100" src="{{ $product->image }}" alt="Image">
+                            <img class="w-100 h-100" src="{{ $product->image }}" alt="Image" id="product-img">
                         </div>
 
                     </div>
@@ -61,15 +73,16 @@
                         @foreach ($product->details as $detail)
                             <label class="custom-control custom-radio custom-control-inline set-quantity"
                                 data-quantity="{{ $detail->quantity }}">
-                                <input type="radio" class="custom-control-input" id="size-{{ $detail->id }}"
-                                    name="size" value="{{ $detail->id }}" {{ $loop->index != 0 ?: 'checked' }}>
+                                <input type="radio" class="custom-control-input custom-control-input-size"
+                                    id="size-{{ $detail->id }}" name="size" value="{{ $detail->size }}"
+                                    data-product-id="{{ $product->id }}" {{ $loop->index != 0 ?: 'checked' }}>
                                 <span class="custom-control-label">{{ $detail->size }}</span>
                             </label>
                         @endforeach
                     </form>
                 </div>
 
-                <span id="remaining-quantity">Quantity: 1289</span>
+                <span id="remaining-quantity">Quantity: 0</span>
 
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: auto;">
@@ -79,14 +92,18 @@
                             </button>
                         </div>
                         <input type="number" class="form-control bg-secondary text-center" value="1"
-                            id="show-quantity">
+                            id="show-quantity" />
+
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    <button class="btn btn-primary px-3 add-to-cart-btn" data-size="{{ $product }}">
+                        <i class="fa fa-shopping-cart mr-1"></i>
+                        Add To Cart
+                    </button>
                 </div>
 
                 <span class="text-danger over-quantity"></span>
@@ -128,8 +145,8 @@
                             <div class="col-md-6">
                                 <h4 class="mb-4">1 review for {{ $product->name }}</h4>
                                 <div class="media mb-4">
-                                    <img src="{{ asset('client/img/user.jpg') }}" alt="Image" class="img-fluid mr-3 mt-1"
-                                        style="width: 45px;">
+                                    <img src="{{ asset('client/img/user.jpg') }}" alt="Image"
+                                        class="img-fluid mr-3 mt-1" style="width: 45px;">
                                     <div class="media-body">
                                         <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
                                         <div class="text-primary mb-2">
@@ -181,4 +198,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    @vite('resources/js/product/show.js')
 @endsection

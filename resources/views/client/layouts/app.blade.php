@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Favicon -->
     <link href="{{ asset('client/img/favicon.ico') }}" rel="icon">
@@ -21,6 +22,10 @@
 
     <!-- Libraries Stylesheet -->
     <link href="{{ asset('client/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <!-- IziToast -->
+    <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/iziToast.js') }}"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('client/css/style.css') }}" rel="stylesheet">
@@ -47,7 +52,7 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-
+    @include('vendor.lara-izitoast.toast')
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

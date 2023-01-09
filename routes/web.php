@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\Usercontroller;
-use App\Http\Controllers\Client\HomeController;
 // ----------------------------------------------------------------
 
 /*
@@ -29,6 +28,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Client\CartController;
+use App\Models\Cart;
+use App\Models\Coupon;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,10 +43,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('test', function (Request $request) {
-    $category = new Category();
-    $result = $category->all()->withProducts(5);
-    return $result;
+Route::any('test', function () {
+    DB::enableQueryLog();
+    Cart::all()->getAll();
+    return DB::getQueryLog();
 });
 
 Route::get('/', function () {
@@ -52,7 +54,7 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::view('dashboard', 'admin.dashboard.index')->name('dashboard');
     Route::resource('role', RoleController::class);
     Route::resource('user', Usercontroller::class);
@@ -62,5 +64,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
 });
 
 Route::resource('product', ProductController::class);
+Route::resource('cart', CartController::class);
+Route::post('cart-update/{id}', [CartController::class, 'updateQuantity'])->name('cart-update-quantity');
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\Client\HomeController::class, 'index'])->name('home');
