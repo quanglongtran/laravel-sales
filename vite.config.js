@@ -14,6 +14,7 @@ export default defineConfig({
                 "resources/js/product/edit.js",
                 "resources/js/coupon/index.js",
                 "resources/js/cart/index.js",
+                "resources/js/cart/checkout.js",
             ],
             refresh: true,
         }),

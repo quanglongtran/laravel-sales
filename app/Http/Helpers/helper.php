@@ -41,7 +41,7 @@ if (!function_exists('validatorFailed')) {
 function jsonResponse(bool $success, string $message, array $data = [])
 {
     return response()->json([
-        'success' => true,
+        'success' => $success,
         'message' => $message,
         'data' => $data
     ]);

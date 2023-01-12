@@ -36,6 +36,9 @@ $(function () {
         constructor() {
             this.form = document.createElement("form");
             this.form.setAttribute("method", "post");
+            this.form.innerHTML += `<input type="hidden" name="_token" value="${$(
+                'meta[name="csrf-token"]'
+            ).attr("content")}"/>`;
             document.body.appendChild(this.form);
             this.details = {};
             this.setSize();

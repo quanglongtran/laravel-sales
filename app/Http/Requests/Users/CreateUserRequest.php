@@ -33,22 +33,4 @@ class CreateUserRequest extends FormRequest
             'phone' => 'required|unique:users,phone',
         ];
     }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                \notify($error, null, 'error');
-            }
-            return;
-        }
-
-        \notify('Cerate user successfully', \null, 'success');
-    }
 }

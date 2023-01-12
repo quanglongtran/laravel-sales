@@ -70,6 +70,7 @@
                 <div class="d-flex mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3">Size:</p>
                     <form>
+                        @csrf
                         @foreach ($product->details as $detail)
                             <label class="custom-control custom-radio custom-control-inline set-quantity"
                                 data-quantity="{{ $detail->quantity }}">
