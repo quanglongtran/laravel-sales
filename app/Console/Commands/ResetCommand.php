@@ -42,7 +42,7 @@ class ResetCommand extends Command
                 }
             }
         }
-
+        session()->forget(['coupon_code', 'discount_amount_price', 'coupon_id']);
         $this->info('Reset successfully');
 
         return Command::SUCCESS;

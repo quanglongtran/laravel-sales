@@ -14,6 +14,8 @@ export default defineConfig({
                 "resources/js/product/edit.js",
                 "resources/js/coupon/index.js",
                 "resources/js/cart/index.js",
+                "resources/js/cart/checkout.js",
+                "resources/js/order/index.js",
             ],
             refresh: true,
         }),
@@ -21,6 +23,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "@utilities": path.resolve(__dirname, "./resources/js/utilities"),
+            "@config": path.resolve(__dirname, "./resources/js/config"),
         },
     },
 });

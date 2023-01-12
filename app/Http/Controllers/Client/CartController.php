@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartProduct\CreateCartProduct;
+use App\Http\Requests\Order\CreateOrderRequest;
 use App\Http\Resources\Cart\CartResource;
 use App\Models\Cart;
 use App\Models\CartProduct;
@@ -29,7 +30,7 @@ class CartController extends Controller
         $this->coupon = $coupon;
         $this->order = $order;
 
-        $this->middleware(['auth'], ['only' => ['store', 'index']]);
+        $this->middleware(['auth']);
     }
 
     /**
@@ -164,5 +165,51 @@ class CartController extends Controller
             $notify = notify('Update cart successfully', null, 'success');
             return \back()->with('withNotify', $notify);
         }
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        $name = $request->input('coupon_code');
+        $coupon = $this->coupon->firstWithExpired($name, auth()->user()->getAuthIdentifier());
+        $couponSessions = \collect(['coupon_id' => optional($coupon)->id, 'discount_amount_price' => optional($coupon)->value, 'coupon_code' => $name]);
+
+        if ($coupon) {
+            $couponSessions->each(fn ($value, $key) => session([$key => $value]));
+            return jsonResponse(true, 'Coupon successfully applied coupon code', [
+                'coupon_code' => $name,
+                'discount_amount_price' => $coupon->value,
+                'coupon_id' => $coupon->id
+            ]);
+        } else {
+            session()->forget(\json_decode($couponSessions->keys()));
+            return jsonResponse(false, 'Coupon code applied failed');
+        }
+    }
+
+    public function checkout()
+    {
+        $cart = $this->cart->firstOrCreateBy(auth()->user()->id)->load('cartProducts');
+
+        return view('client.cart.checkout', compact('cart'));
+    }
+
+    public function checkoutHandle(CreateOrderRequest $request)
+    {
+        $this->order->create(\array_merge($request->all(), [
+            'user_id' => \auth()->user()->getAuthIdentifier(),
+            'status' => 'pending'
+        ]));
+
+        if ($couponId = \session()->get('coupon_id')) {
+            if ($coupon = $this->coupon->find($couponId)) {
+                $coupon->users()->attach(auth()->user()->id, ['value' => $coupon->value]);
+                // return $coupon;
+            }
+        }
+
+        $cart = $this->cart->firstOrCreateBy(auth()->user()->getAuthIdentifier());
+        $cart->cartProducts->each->delete();
+
+        session()->forget(['coupon_code', 'discount_amount_price', 'coupon_id']);
     }
 }

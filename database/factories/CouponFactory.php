@@ -19,7 +19,7 @@ class CouponFactory extends Factory
         return [
             'name' => 'Coupon ' . \fake()->unique()->name(),
             'type' => 'money',
-            'value' => 20,
+            'value' => 20000,
             'expired' => \now()->addDays(\random_int(1, 7)),
         ];
     }

@@ -1,4 +1,12 @@
+@php
+    foreach (optional(session()->get('errors'))->keys() ?? [] as $key => $message) {
+        notify($message, null, 'error');
+    }
+    
+@endphp
+
 <script>
+    'use strict';
     @foreach (session('toasts', collect())->toArray() as $toast)
 
         var options = {

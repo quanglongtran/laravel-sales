@@ -29,22 +29,4 @@ class UpdateRoleRequest extends FormRequest
             'group' => 'required',
         ];
     }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                \notify($error, null, 'error');
-            }
-            return;
-        }
-
-        \notify('Update role successfully', \null, 'success');
-    }
 }

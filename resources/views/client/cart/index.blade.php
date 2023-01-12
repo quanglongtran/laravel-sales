@@ -43,7 +43,7 @@
                     @foreach ($cartProducts as $cartProduct)
                         <tr class="cart-row" data-cart-quantity="{{ $cartProduct->product_quantity }}">
                             <td>{{ $cartProduct->product->name }}</td>
-                            <td>{{ $cartProduct->product_price }}</td>
+                            <td class="price">{{ $cartProduct->product_price }}</td>
                             <td>{{ $cartProduct->product_size }}</td>
                             <td>{{ $cartProduct->product->sale }}</td>
                             <td>
@@ -69,7 +69,7 @@
                             </td>
                             <td class="total-price" data-product-price="{{ $cartProduct->product_price }}"></td>
                             <td>
-                                <form action="{{ route('cart-update-quantity', $cartProduct->id) }}" style="display: inline"
+                                <form action="{{ route('cart.update-quantity', $cartProduct->id) }}" style="display: inline"
                                     method="POST" class="cart-product-form-save">
                                     @csrf
                                     <input type="hidden" name="product_quantity">
@@ -92,13 +92,14 @@
             </div>
 
             <div class="col-lg-3">
-                <form class="mb-5" method="POST">
+                <form class="mb-5" method="POST" action="{{ route('cart.apply-coupon') }}">
                     @csrf
                     <div class="input-group">
-                        <input type="text" class="form-control p-4" value="{{ Session::get('coupon_code') }}"
-                            name="coupon_code" placeholder="Coupon Code">
+                        <input type="text" class="form-control p-4"
+                            value="{{ Session::get('coupon_code') ?? 'Coupon Vida McKenzie' }}" name="coupon_code"
+                            placeholder="Coupon Code" autocomplete="off">
                         <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
+                            <button type="button" class="btn btn-primary">Apply Coupon</button>
                         </div>
                     </div>
                 </form>
@@ -109,25 +110,25 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium total-price" data-price="{{ 12000 }}">
-                                ${{ 12000 }}</h6>
+                            <h6 class="font-weight-medium sub-total-price"></h6>
                         </div>
-                        @if (session('discount_amount_price'))
-                            <div class="d-flex justify-content-between">
-                                <h6 class="font-weight-medium">Coupon </h6>
-                                <h6 class="font-weight-medium coupon-div"
-                                    data-price="{{ session('discount_amount_price') }}">
-                                    ${{ session('discount_amount_price') }}</h6>
-                            </div>
-                        @endif
+
+                        {{-- @if (session('discount_amount_price')) --}}
+                        <div class="{{ session('discount_amount_price') ? 'd-flex' : 'd-none' }} justify-content-between">
+                            <h6 class="font-weight-medium">Coupon </h6>
+                            <h6 class="font-weight-medium coupon-div">
+                                <span class="coupon-value">{{ session('discount_amount_price') }}</span>
+                            </h6>
+                        </div>
+                        {{-- @endif --}}
 
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold total-price-all"></h5>
+                            <h5 class="font-weight-bold final-price"></h5>
                         </div>
-                        <a class="btn btn-block btn-primary my-3 py-3">Order</a>
+                        <a href="{{ route('cart.checkout') }}" class="btn btn-block btn-primary my-3 py-3">Order</a>
                     </div>
                 </div>
             </div>

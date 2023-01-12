@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\OrderController;
 use App\Models\Cart;
 use App\Models\Coupon;
 
@@ -44,9 +45,7 @@ use App\Models\Coupon;
 */
 
 Route::any('test', function () {
-    DB::enableQueryLog();
-    Cart::all()->getAll();
-    return DB::getQueryLog();
+    session()->forget(['coupon_code', 'discount_amount_price', 'coupon_id']);
 });
 
 Route::get('/', function () {
@@ -64,7 +63,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::resource('product', ProductController::class);
-Route::resource('cart', CartController::class);
-Route::post('cart-update/{id}', [CartController::class, 'updateQuantity'])->name('cart-update-quantity');
 
-Route::get('/home', [App\Http\Controllers\Client\HomeController::class, 'index'])->name('home');
+Route::prefix('cart')->name('cart.')->middleware('auth')->group(function () {
+    Route::post('update/{id}', [CartController::class, 'updateQuantity'])->name('update-quantity');
+    Route::post('counpon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+    Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::post('checkout-handle', [CartController::class, 'checkoutHandle'])->name('checkout-handle');
+});
+
+Route::prefix('order')->name('order.')->group(function () {
+    Route::get('/', [OrderController::class, 'index'])->name('index');
+    Route::delete('delete/{id}', [OrderController::class, 'delete'])->name('delete');
+});
+
+Route::resource('cart', CartController::class);
+
+// Route::get('/home', [App\Http\Controllers\Client\HomeController::class, 'index'])->name('home');

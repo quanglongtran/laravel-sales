@@ -1,5 +1,6 @@
 import $ from "jquery";
 import Swal from "sweetalert2";
+import SendAction from "@utilities";
 
 $.ajaxSetup({
     headers: {
@@ -8,6 +9,21 @@ $.ajaxSetup({
 });
 
 (function () {
+    function totalPriceFn(couponVal) {
+        if (couponVal) {
+            $(".coupon-value")
+                .text(couponVal)
+                .parents(".d-none")
+                .addClass("d-flex");
+        }
+
+        let price = 0;
+        $(".total-price").each(function (index, item) {
+            price += Number($(item).text());
+        });
+        $(".sub-total-price").text(price);
+        $(".final-price").text(price - Number($(".coupon-value").text()));
+    }
     class Main {
         constructor(row) {
             this.quantity = 0;
@@ -73,6 +89,7 @@ $.ajaxSetup({
             btn.on("click", () => {
                 this.submit(newVal, row);
             });
+            totalPriceFn();
         }
 
         submit(newVal, row) {
@@ -140,4 +157,37 @@ $.ajaxSetup({
                 main.setQuantity(newVal, row);
             });
     });
+
+    $("[name=coupon_code]").each(function (index, item) {
+        $(item)
+            .parents("form")
+            .find("button")
+            .on("click", function () {
+                if ($(item).val() != "") {
+                    $.ajax({
+                        url: $(item).parents("form").attr("action"),
+                        type: "post",
+                        data: {
+                            coupon_code: $(item).val(),
+                        },
+                        success: (response) => {
+                            Swal.fire({
+                                text: response.message,
+                                icon: response.success ? "success" : "error",
+                            });
+                            if (response.success) {
+                                totalPriceFn(
+                                    response.data.discount_amount_price
+                                );
+                            } else {
+                                totalPriceFn(0);
+                            }
+                        },
+                    });
+                } else {
+                    Swal.fire("Please enter coupon code", "", "info");
+                }
+            });
+    });
+    totalPriceFn();
 })();
