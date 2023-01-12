@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\OrderController;
 use App\Models\Cart;
 use App\Models\Coupon;
 
@@ -68,6 +69,11 @@ Route::prefix('cart')->name('cart.')->middleware('auth')->group(function () {
     Route::post('counpon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
     Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::post('checkout-handle', [CartController::class, 'checkoutHandle'])->name('checkout-handle');
+});
+
+Route::prefix('order')->name('order.')->group(function () {
+    Route::get('/', [OrderController::class, 'index'])->name('index');
+    Route::delete('delete/{id}', [OrderController::class, 'delete'])->name('delete');
 });
 
 Route::resource('cart', CartController::class);

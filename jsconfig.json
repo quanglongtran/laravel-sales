@@ -2,7 +2,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@utilities": ["resources/js/utilities"]
+            "@utilities": ["resources/js/utilities"],
+            "@config": ["resources/js/config"]
         }
     }
 }

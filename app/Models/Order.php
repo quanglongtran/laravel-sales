@@ -21,4 +21,9 @@ class Order extends Model
         'payment',
         'user_id'
     ];
+
+    public function getWithPaginateBy($user_id)
+    {
+        return $this->whereUserId($user_id)->latest('id')->paginate(12);
+    }
 }

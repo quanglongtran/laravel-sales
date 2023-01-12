@@ -45,7 +45,7 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
+                                <a href="{{ route('order.index') }}" class="dropdown-item">Order</a>
                                 <a href="{{ route('cart.checkout') }}" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
@@ -53,8 +53,15 @@
                     </div>
                     @if (!auth()->check())
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Login</a>
-                            <a href="" class="nav-item nav-link">Register</a>
+                            <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
+                            <a href="{{ route('logout') }}" class="nav-item nav-link">Register</a>
+                        </div>
+                    @else
+                        <div class="navbar-nav ml-auto py-0">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <span class="nav-item nav-link" onclick="this.parentElement.submit()">Logout</span>
+                            </form>
                         </div>
                     @endif
                 </div>

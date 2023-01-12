@@ -96,7 +96,7 @@
                     @csrf
                     <div class="input-group">
                         <input type="text" class="form-control p-4"
-                            value="{{ Session::get('coupon_code') ?? 'Coupon Estel Torphy' }}" name="coupon_code"
+                            value="{{ Session::get('coupon_code') ?? 'Coupon Vida McKenzie' }}" name="coupon_code"
                             placeholder="Coupon Code" autocomplete="off">
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary">Apply Coupon</button>
