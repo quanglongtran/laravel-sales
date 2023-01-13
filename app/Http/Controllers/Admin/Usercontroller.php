@@ -58,7 +58,7 @@ class Usercontroller extends Controller
         $user->images()->create(['url' => $path_avatar]);
         $user->assignRole($request->role_ids);
 
-        return \to_route('user.index');
+        return \to_route('admin.user.index');
     }
 
     /**
@@ -107,7 +107,7 @@ class Usercontroller extends Controller
         $user->update(\array_merge($request->all(), \compact('password')));
         $user->syncRoles($request->role_ids);
 
-        return \to_route('user.index');
+        return \to_route('admin.user.index');
     }
 
     /**
@@ -121,6 +121,6 @@ class Usercontroller extends Controller
         $user = $this->user->findOrFail($id);
         $user->deleteImage($user->images->count() > 0 ? $user->images->url : '')->delete();
         \notify('Delete user successfully', \null, 'success');
-        return to_route('user.index');
+        return to_route('admin.user.index');
     }
 }

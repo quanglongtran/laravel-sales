@@ -21,7 +21,7 @@ class RoleController extends Controller
         $roles = Role::latest('id')->paginate(5);
 
         // return $roles;
-        return \view('admin.roles.index', ['roles' => $roles]);
+        return \view('admin.role.index', ['roles' => $roles]);
     }
 
     /**
@@ -74,7 +74,7 @@ class RoleController extends Controller
         $role = Role::with('permissions')->findOrFail($id);
         $permissions = Permission::all()->groupBy('group');
 
-        return \view('admin.roles.edit', \compact('role', 'permissions'));
+        return \view('admin.role.edit', \compact('role', 'permissions'));
     }
 
     /**
@@ -92,7 +92,7 @@ class RoleController extends Controller
         $role->permissions()->sync($dataUpdate['permission_ids']);
 
         \notify("Edit $role->display_name role successfully", null, 'success');
-        return \to_route('role.index');
+        return \to_route('admin.role.index');
     }
 
     /**

@@ -63,6 +63,9 @@ class RoleSeeder extends Seeder
             ['name' => 'update-coupon', 'display_name' => 'Update coupon', 'group' => 'coupon'],
             ['name' => 'show-coupon', 'display_name' => 'Show coupon', 'group' => 'coupon'],
             ['name' => 'delete-coupon', 'display_name' => 'Delete coupon', 'group' => 'coupon'],
+
+            ['name' => 'update-order', 'display_name' => 'Update order', 'group' => 'order'],
+            ['name' => 'show-order', 'display_name' => 'Show order', 'group' => 'order'],
         ];
 
         foreach ($permissions as $permission) {

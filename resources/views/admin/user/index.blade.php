@@ -8,7 +8,7 @@
     </div>
 
     <div>
-        <a href="{{ route('user.create') }}" class="btn btn-primary">Create</a>
+        <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Create</a>
     </div>
 
     <div>
@@ -34,9 +34,9 @@
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->address }}</td>
                     <td>
-                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-warning">Edit</a>
 
-                        <form action="{{ route('user.destroy', $user->id) }}" style="display: inline" method="POST">
+                        <form action="{{ route('admin.user.destroy', $user->id) }}" style="display: inline" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" data-id="{{ $user->id }}">Delete</button>

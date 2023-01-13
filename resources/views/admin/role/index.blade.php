@@ -8,7 +8,7 @@
     </div>
 
     <div>
-        <a href="{{ route('role.create') }}" class="btn btn-primary">Create</a>
+        <a href="{{ route('admin.role.create') }}" class="btn btn-primary">Create</a>
     </div>
 
     <div>
@@ -26,9 +26,9 @@
                     <td>{{ $role->name }}</td>
                     <td>{{ $role->display_name }}</td>
                     <td>
-                        <a href="{{ route('role.edit', $role->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('admin.role.edit', $role->id) }}" class="btn btn-warning">Edit</a>
 
-                        <form action="{{ route('role.destroy', $role->id) }}" style="display: inline" method="POST">
+                        <form action="{{ route('admin.role.destroy', $role->id) }}" style="display: inline" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger">Delete</button>
