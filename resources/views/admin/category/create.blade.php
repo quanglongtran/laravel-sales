@@ -7,7 +7,7 @@
         <h1>Create category</h1>
 
         <div>
-            <form action="{{ route('category.store') }}" method="POST">
+            <form action="{{ route('admin.category.store') }}" method="POST">
                 @csrf
 
                 <div class="input-group input-group-static mb-4">

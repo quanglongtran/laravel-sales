@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\Usercontroller;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 // ----------------------------------------------------------------
 
 /*
@@ -32,6 +33,7 @@ use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\OrderController;
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +47,9 @@ use App\Models\Coupon;
 */
 
 Route::any('test', function () {
-    session()->forget(['coupon_code', 'discount_amount_price', 'coupon_id']);
+    foreach (config('order.status') as $status) {
+        echo $status;
+    }
 });
 
 Route::get('/', function () {
@@ -53,13 +57,15 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::view('dashboard', 'admin.dashboard.index')->name('dashboard');
     Route::resource('role', RoleController::class);
     Route::resource('user', Usercontroller::class);
     Route::resource('category', CategoryController::class);
     Route::resource('product', AdminProductController::class);
     Route::resource('coupon', CouponController::class);
+    Route::get('order', [AdminOrderController::class, 'index'])->name('order.index');
+    Route::put('order-update-status', [AdminOrderController::class, 'updateStatus'])->middleware('update-order')->name('order.update-status');
 });
 
 Route::resource('product', ProductController::class);

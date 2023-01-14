@@ -31,7 +31,7 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
-    public function childrens()
+    public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
@@ -43,7 +43,7 @@ class Category extends Model
 
     public function getParents()
     {
-        return Category::with('childrens')->whereNull('parent_id')->get(['id', 'name']);
+        return Category::with('children')->whereNull('parent_id')->get(['id', 'name']);
     }
 
     public function products()

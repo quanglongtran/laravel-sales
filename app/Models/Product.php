@@ -56,7 +56,7 @@ class Product extends Model
 
     public function getImagePathAttribute()
     {
-        return asset($this->images->count() > 0 ? 'upload/' . $this->images->first()->url : 'upload/default.png');
+        return \getImage($this);
     }
 
 

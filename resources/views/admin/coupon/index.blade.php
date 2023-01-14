@@ -7,9 +7,11 @@
         <h1>Coupon list</h1>
     </div>
 
-    <div>
-        <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary">Create</a>
-    </div>
+    @can('create-coupon')
+        <div>
+            <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary">Create</a>
+        </div>
+    @endcan
 
     <div>
         <table class="table table-hover">
@@ -30,19 +32,23 @@
                     <td>{{ $coupon->value }}</td>
                     <td>{{ $coupon->expired }}</td>
                     <td>
-                        <a href="{{ route('admin.coupon.edit', $coupon->id) }}" class="btn btn-warning">Edit</a>
+                        @can('update-coupon')
+                            <a href="{{ route('admin.coupon.edit', $coupon->id) }}" class="btn btn-warning">Edit</a>
+                        @endcan
 
-                        <form action="{{ route('admin.coupon.destroy', $coupon->id) }}" style="display: inline" method="POST"
-                            id="coupon-form-delete-{{ $coupon->id }}">
-                            @csrf
-                            @method('DELETE')
+                        @can('delete-coupon')
+                            <form action="{{ route('admin.coupon.destroy', $coupon->id) }}" style="display: inline" method="POST"
+                                id="coupon-form-delete-{{ $coupon->id }}">
+                                @csrf
+                                @method('DELETE')
 
-                            <button type="button" class="btn bg-gradient-danger mb-3 btn-submit-delete-modal"
-                                data-bs-toggle="modal" data-bs-target="#modal-default" data-coupon-id="{{ $coupon->id }}"
-                                data-coupon-name="{{ $coupon->name }}">
-                                Delete
-                            </button>
-                        </form>
+                                <button type="button" class="btn bg-gradient-danger mb-3 btn-submit-delete-modal"
+                                    data-bs-toggle="modal" data-bs-target="#modal-default" data-coupon-id="{{ $coupon->id }}"
+                                    data-coupon-name="{{ $coupon->name }}">
+                                    Delete
+                                </button>
+                            </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach

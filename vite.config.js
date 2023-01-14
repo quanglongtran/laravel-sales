@@ -16,6 +16,7 @@ export default defineConfig({
                 "resources/js/cart/index.js",
                 "resources/js/cart/checkout.js",
                 "resources/js/order/index.js",
+                "resources/js/admin/order/index.js",
             ],
             refresh: true,
         }),

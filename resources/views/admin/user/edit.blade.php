@@ -8,7 +8,7 @@
         <h1>Edit user</h1>
 
         <div>
-            <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

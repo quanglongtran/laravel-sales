@@ -23,6 +23,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('admin/assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/img/favicon.png') }}">
     <title>
@@ -77,7 +78,10 @@
                         <li class="nav-item d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none">Sign In</span>
+                                <form action="{{ route('logout') }}" method="POST" style="display: inline-block">
+                                    @csrf
+                                    <span class="d-sm-inline d-none" onclick="this.parentElement.submit()">Logout</span>
+                                </form>
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

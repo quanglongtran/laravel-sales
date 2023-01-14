@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Traits\PermissionMidleware;
 
 class Usercontroller extends Controller
 {
+    use PermissionMidleware;
     protected User $user;
     protected Role $role;
 
@@ -19,6 +19,7 @@ class Usercontroller extends Controller
     {
         $this->user = $user;
         $this->role = $role;
+        $this->setMidleware('user');
     }
 
     /**
@@ -58,7 +59,7 @@ class Usercontroller extends Controller
         $user->images()->create(['url' => $path_avatar]);
         $user->assignRole($request->role_ids);
 
-        return \to_route('user.index');
+        return \to_route('admin.user.index');
     }
 
     /**
@@ -107,7 +108,7 @@ class Usercontroller extends Controller
         $user->update(\array_merge($request->all(), \compact('password')));
         $user->syncRoles($request->role_ids);
 
-        return \to_route('user.index');
+        return \to_route('admin.user.index');
     }
 
     /**
@@ -121,6 +122,6 @@ class Usercontroller extends Controller
         $user = $this->user->findOrFail($id);
         $user->deleteImage($user->images->count() > 0 ? $user->images->url : '')->delete();
         \notify('Delete user successfully', \null, 'success');
-        return to_route('user.index');
+        return to_route('admin.user.index');
     }
 }
