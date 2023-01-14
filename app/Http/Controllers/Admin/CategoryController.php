@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategory;
 use App\Http\Requests\Category\UpdateCategory;
 use App\Models\Category;
+use App\Traits\PermissionMiddleware;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use PermissionMiddleware;
     protected $category;
 
     public function __construct(Category $category)
     {
         $this->category = $category;
+        $this->setMidleware('category');
     }
 
     /**

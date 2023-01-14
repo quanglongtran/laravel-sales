@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Traits\PermissionMidleware;
 
 class Usercontroller extends Controller
 {
+    use PermissionMidleware;
     protected User $user;
     protected Role $role;
 
@@ -19,6 +19,7 @@ class Usercontroller extends Controller
     {
         $this->user = $user;
         $this->role = $role;
+        $this->setMidleware('user');
     }
 
     /**

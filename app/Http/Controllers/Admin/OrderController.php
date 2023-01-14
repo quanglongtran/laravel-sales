@@ -15,7 +15,7 @@ class OrderController extends Controller
     {
         $this->order = $order;
         $this->middleware(['permission:show-order'], ['only' => 'index']);
-        // $this->middleware(['permission:update-order'], ['only' => 'updateStatus']);
+        $this->middleware(['permission:update-order'], ['only' => 'updateStatus']);
     }
 
     public function index()

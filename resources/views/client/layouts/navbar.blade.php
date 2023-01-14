@@ -16,9 +16,9 @@
                                 {{ $category->name }}
                                 <i class="fa fa-angle-down float-right mt-1"></i>
                             </a>
-                            @if ($category->childrens->count() > 0)
+                            @if ($category->children->count() > 0)
                                 <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                    @foreach ($category->childrens as $child)
+                                    @foreach ($category->children as $child)
                                         <a href="" class="dropdown-item">{{ $child->name }}</a>
                                     @endforeach
                                 </div>

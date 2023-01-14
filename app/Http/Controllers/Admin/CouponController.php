@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Coupon\CreateCouponRequest;
 use App\Http\Requests\Coupon\UpdateCouponRequest;
 use App\Models\Coupon;
+use App\Traits\PermissionMiddleware;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
+    use PermissionMiddleware;
+
     protected $coupon;
 
     public function __construct(Coupon $coupon)
     {
         $this->coupon = $coupon;
+        $this->setMidleware('coupon');
     }
 
     /**

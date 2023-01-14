@@ -31,9 +31,11 @@
         <h1>Product list</h1>
     </div>
 
-    <div>
-        <a href="{{ route('product.create') }}" class="btn btn-primary">Create</a>
-    </div>
+    @can('create-product')
+        <div>
+            <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Create</a>
+        </div>
+    @endcan
 
     <div>
         <table class="table table-hover">
@@ -49,7 +51,7 @@
             @foreach ($products as $product)
                 <tr style="position: relative;">
                     <td>{{ $product->id }}</td>
-                    <td><img src="{{ isset($product->images->url) ? "storage/{$product->images->url}" : asset('storage/uploads/products/default.jpg') }}"
+                    <td><img src="{{ $product->image_path }}"
                             onerror="this.src='{{ asset('storage/uploads/products/default.jpg') }}'"
                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover">
                     </td>
@@ -57,16 +59,22 @@
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->sale }}</td>
                     <td>
-                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning z-1">Edit</a>
+                        @can('update-product')
+                            <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-warning z-1">Edit</a>
+                        @endcan
 
-                        <form action="{{ route('product.destroy', $product->id) }}"
-                            style="display: inline-block; z-index: 1; position: relative;" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" data-id="{{ $product->id }}">Delete</button>
-                        </form>
+                        @can('delete-product')
+                            <form action="{{ route('admin.product.destroy', $product->id) }}"
+                                style="display: inline-block; z-index: 1; position: relative;" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" data-id="{{ $product->id }}">Delete</button>
+                            </form>
+                        @endcan
                     </td>
-                    <td class="redirect" href="{{ route('product.show', $product->id) }}"></td>
+                    @can('show-product')
+                        <td class="redirect" href="{{ route('admin.product.show', $product->id) }}"></td>
+                    @endcan
                 </tr>
             @endforeach
         </table>

@@ -7,9 +7,11 @@
         <h1>Category list</h1>
     </div>
 
-    <div>
-        <a href="{{ route('category.create') }}" class="btn btn-primary">Create</a>
-    </div>
+    @can('create-category')
+        <div>
+            <a href="{{ route('admin.category.create') }}" class="btn btn-primary">Create</a>
+        </div>
+    @endcan
 
     <div>
         <table class="table table-hover">
@@ -26,19 +28,23 @@
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->parent_name }}</td>
                     <td>
-                        <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning">Edit</a>
+                        @can('update-category')
+                            <a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-warning">Edit</a>
+                        @endcan
 
-                        <form action="{{ route('category.destroy', $category->id) }}" style="display: inline" method="POST"
-                            id="category-form-delete-{{ $category->id }}">
-                            @csrf
-                            @method('DELETE')
+                        @can('delete-category')
+                            <form action="{{ route('admin.category.destroy', $category->id) }}" style="display: inline"
+                                method="POST" id="category-form-delete-{{ $category->id }}">
+                                @csrf
+                                @method('DELETE')
 
-                            <button type="button" class="btn bg-gradient-danger mb-3 btn-submit-delete-modal"
-                                data-bs-toggle="modal" data-bs-target="#modal-default"
-                                data-category-id="{{ $category->id }}" data-category-name="{{ $category->name }}">
-                                Delete
-                            </button>
-                        </form>
+                                <button type="button" class="btn bg-gradient-danger mb-3 btn-submit-delete-modal"
+                                    data-bs-toggle="modal" data-bs-target="#modal-default"
+                                    data-category-id="{{ $category->id }}" data-category-name="{{ $category->name }}">
+                                    Delete
+                                </button>
+                            </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach

@@ -18,15 +18,23 @@
                 <th>Payment</th>
             </tr>
 
-            @foreach ($orders as $user)
+            @foreach ($orders as $order)
                 <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->status }}</td>
-                    <td>{{ $user->ship }}</td>
-                    <td>{{ $user->customer_name }}</td>
-                    <td>{{ $user->customer_email }}</td>
-                    <td>{{ $user->customer_adress }}</td>
-                    <td>{{ $user->note }}</td>
+                    <td>{{ $order->id }}</td>
+                    <td>
+                        <select class="change-status" data-url="{{ route('admin.order.update-status') }}"
+                            data-order-id="{{ $order->id }}">
+                            @foreach (config('order.status') as $status)
+                                <option value="{{ $status }}" {{ $status == $order->status ? 'selected' : '' }}>
+                                    {{ $status }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>{{ $order->ship }}</td>
+                    <td>{{ $order->customer_name }}</td>
+                    <td>{{ $order->customer_email }}</td>
+                    <td>{{ $order->customer_adress }}</td>
+                    <td>{{ $order->note }}</td>
                     <td>Cash</td>
                 </tr>
             @endforeach
@@ -34,4 +42,8 @@
 
         {{ $orders->links() }}
     </div>
+@endsection
+
+@section('scripts')
+    @vite('resources/js/admin/order/index.js')
 @endsection

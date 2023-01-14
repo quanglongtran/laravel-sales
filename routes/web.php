@@ -33,6 +33,7 @@ use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\OrderController;
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------

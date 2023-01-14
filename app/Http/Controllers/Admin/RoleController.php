@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
-use App\Models\Permission;
-use App\Models\Role;
+// use App\Models\Permission;
+// use App\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class RoleController extends Controller
 {
@@ -72,6 +75,12 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::with('permissions')->findOrFail($id);
+
+        if ($role->name == 'super-admin') {
+            \notify('Sorry, you cannot edit Super Admin role!', null, 'error');
+            return \back();
+        }
+
         $permissions = Permission::all()->groupBy('group');
 
         return \view('admin.role.edit', \compact('role', 'permissions'));
@@ -91,6 +100,7 @@ class RoleController extends Controller
 
         $role->permissions()->sync($dataUpdate['permission_ids']);
 
+        Artisan::call('cache:clear');
         \notify("Edit $role->display_name role successfully", null, 'success');
         return \to_route('admin.role.index');
     }

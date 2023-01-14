@@ -9,7 +9,7 @@
         <h1>Create user</h1>
 
         <div>
-            <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.user.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="preview" style="width: 200px; height: 200px; border-radius: 50%;"></div>

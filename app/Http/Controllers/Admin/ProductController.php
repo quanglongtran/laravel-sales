@@ -9,11 +9,14 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\User;
+use App\Traits\PermissionMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    use PermissionMiddleware;
+
     public Product $product;
     public Category $category;
 
@@ -21,6 +24,7 @@ class ProductController extends Controller
     {
         $this->category = $category;
         $this->product = $product;
+        $this->setMidleware('product');
     }
 
     /**
@@ -126,7 +130,7 @@ class ProductController extends Controller
         $product->details()->delete();
         $product->details()->insert($details);
 
-        return \to_route('product.index');
+        return \to_route('admin.product.index');
     }
 
     /**
@@ -138,7 +142,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = $this->product->findOrFail($id);
-        // dd($product);
+
         $product->details()->delete();
         $product->deleteImage();
         $product->delete();

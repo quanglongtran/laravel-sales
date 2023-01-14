@@ -7,9 +7,11 @@
         <h1>Role list</h1>
     </div>
 
-    <div>
-        <a href="{{ route('admin.role.create') }}" class="btn btn-primary">Create</a>
-    </div>
+    @can('create-role')
+        <div>
+            <a href="{{ route('admin.role.create') }}" class="btn btn-primary">Create</a>
+        </div>
+    @endcan
 
     <div>
         <table class="table table-hover">
@@ -21,20 +23,26 @@
             </tr>
 
             @foreach ($roles as $role)
-                <tr>
-                    <td>{{ $role->id }}</td>
-                    <td>{{ $role->name }}</td>
-                    <td>{{ $role->display_name }}</td>
-                    <td>
-                        <a href="{{ route('admin.role.edit', $role->id) }}" class="btn btn-warning">Edit</a>
+                @if ($role->name != 'super-admin')
+                    <tr>
+                        <td>{{ $role->id }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td>{{ $role->display_name }}</td>
+                        <td>
+                            @can('update-role')
+                                <a href="{{ route('admin.role.edit', $role->id) }}" class="btn btn-warning">Edit</a>
+                            @endcan
 
-                        <form action="{{ route('admin.role.destroy', $role->id) }}" style="display: inline" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                            @can('delete-role')
+                                <form action="{{ route('admin.role.destroy', $role->id) }}" style="display: inline" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            @endcan
+                        </td>
+                    </tr>
+                @endif
             @endforeach
         </table>
 
