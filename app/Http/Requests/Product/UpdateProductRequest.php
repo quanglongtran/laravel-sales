@@ -29,7 +29,7 @@ class UpdateProductRequest extends FormRequest
             'description' => 'required',
             'sale' => 'required',
             'price' => 'required',
-            'category_ids' => 'required|array',
+            'category_ids' => 'required|array|exists:categories,id',
             'details' => 'required',
         ];
     }

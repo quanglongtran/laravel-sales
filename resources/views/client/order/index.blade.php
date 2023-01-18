@@ -57,5 +57,5 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/js/order/index.js')
+    @vite('resources/js/client/order/index.js')
 @endsection

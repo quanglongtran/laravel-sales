@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Collections\ProductCollection;
-use App\Traits\HandleImageUpLoad;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory, HandleImageUpLoad;
+    use HasFactory;
 
     protected $fillable = [
         'name',

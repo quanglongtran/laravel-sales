@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 
 if (!function_exists('getImage')) {
@@ -9,10 +10,14 @@ if (!function_exists('getImage')) {
      * @param  \Illuminate\Database\Eloquent\Model $model
      * @return string
      */
-    function getImage($model)
+    function getImage($model, $defaultFolder = '')
     {
         if (optional($model->images)->url && file_exists("storage/{$model->images->url}")) {
             return asset("storage/{$model->images->url}");
+        }
+
+        if ($defaultFolder) {
+            return asset("storage/uploads/$defaultFolder/default.jpg");
         }
 
         return asset('storage/uploads/default/default.jpg');
@@ -45,4 +50,18 @@ function jsonResponse(bool $success, string $message, array $data = [])
         'message' => $message,
         'data' => $data
     ]);
+}
+
+if (!function_exists('redirectPrevRoute')) {
+    function redirectPrevRoute($default = RouteServiceProvider::HOME)
+    {
+        $currentRoute = request()->route()->getName();
+        $prevRoute = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
+
+        if ($currentRoute == $prevRoute) {
+            return redirect($default);
+        }
+
+        return back();
+    }
 }

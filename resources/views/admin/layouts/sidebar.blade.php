@@ -23,7 +23,7 @@
                 </a>
             </li>
 
-            @hasrole('super-admin')
+            @can('show-role')
                 <li class="nav-item">
                     <a class="nav-link text-white {{ request()->routeis('admin.role.*') ? 'active bg-gradient-primary' : '' }}"
                         href="{{ route('admin.role.index') }}">
@@ -33,7 +33,7 @@
                         <span class="nav-link-text ms-1">Roles</span>
                     </a>
                 </li>
-            @endhasrole
+            @endcan
 
             @can('show-user')
                 <li class="nav-item">

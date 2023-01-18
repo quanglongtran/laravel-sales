@@ -29,6 +29,6 @@ class CartProduct extends Model
 
     public function getBy($cartId, $productId, $productSize)
     {
-        return CartProduct::whereCartId($cartId)->whereProductId($productId)->whereProductSize($productSize)->first();
+        return $this->whereCartId($cartId)->whereProductId($productId)->whereProductSize($productSize)->first();
     }
 }

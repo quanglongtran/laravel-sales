@@ -73,32 +73,8 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <script>
-        (function() {
-            var categoryId;
-
-            Array.from(document.getElementsByClassName('btn-submit-delete-modal')).forEach((item) => {
-                item.onclick = () => {
-                    getCategory(
-                        item.getAttribute('data-category-id'),
-                        item.getAttribute('data-category-name')
-                    )
-                }
-            });
-
-            document.getElementById('save').onclick = () => {
-                deleteCategory()
-            };
-
-            function getCategory(id, name) {
-                document.getElementById('modal-delete-text').innerText = `Delete ${name}`
-                categoryId = id;
-            }
-
-            function deleteCategory() {
-                document.getElementById(`category-form-delete-${categoryId}`).submit()
-            }
-        })()
-    </script>
+@section('scripts')
+    @vite('resources/js/admin/category/index.js')
 @endsection

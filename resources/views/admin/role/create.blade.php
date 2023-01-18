@@ -7,7 +7,7 @@
         <h1>Create role</h1>
 
         <div>
-            <form action="{{ route('role.store') }}" method="POST">
+            <form action="{{ route('admin.role.store') }}" method="POST">
                 @csrf
 
                 <div class="input-group input-group-static mb-4">

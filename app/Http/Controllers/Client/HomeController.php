@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Repositories\Client\Product\ProductRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    protected Product $product;
+    protected $product;
 
     /**
      * Create a new controller instance.
      *
-     * @param  Product $product
+     * @param ProductRepository $product
      * @return void
      */
-    public function __construct(Product $product)
+    public function __construct(ProductRepository $product)
     {
         $this->product = $product;
     }
@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = $this->product->latest('id')->paginate(2);
+        $products = $this->product->getLatest('id');
 
         return view('client.home.index', \compact('products'));
     }

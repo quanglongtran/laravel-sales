@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
-// use App\Models\Permission;
-// use App\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
+use App\Repositories\Admin\Permission\PermissionRepositoryInterface;
+use App\Repositories\Admin\Role\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {
+    private $role;
+    private $permission;
+
+    public function __construct(RoleRepositoryInterface $role, PermissionRepositoryInterface $permission)
+    {
+        $this->role = $role;
+        $this->permission = $permission;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,10 +26,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::latest('id')->paginate(5);
-
-        // return $roles;
-        return \view('admin.role.index', ['roles' => $roles]);
+        return \view('admin.role.index', ['roles' => $this->role->getLatest('id')]);
     }
 
     /**
@@ -34,9 +36,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all()->groupBy('group');
+        $permissions = $this->permission->getAll()->groupBy('group');
 
-        return \view('admin.roles.create', \compact('permissions'));
+        return \view('admin.role.create', \compact('permissions'));
     }
 
     /**
@@ -47,12 +49,10 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        $dataCreate = $request->all();
-        $role = Role::create($dataCreate);
-        $role->permissions()->attach($dataCreate['permission_ids']);
-        \notify("Create $role->display_name role successfully", '', 'success');
+        $role = $this->role->storeRole($request->all(), $request->permission_ids);
 
-        return \to_route('role.index')->with(['message' => 'Create success']);
+        \notify("Create $role->display_name role successfully", '', 'success');
+        return \to_route('admin.role.index');
     }
 
     /**
@@ -74,16 +74,11 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::with('permissions')->findOrFail($id);
-
-        if ($role->name == 'super-admin') {
-            \notify('Sorry, you cannot edit Super Admin role!', null, 'error');
+        if (!$result = $this->role->edit($id)) {
             return \back();
         }
 
-        $permissions = Permission::all()->groupBy('group');
-
-        return \view('admin.role.edit', \compact('role', 'permissions'));
+        return \view('admin.role.edit', $result);
     }
 
     /**
@@ -95,12 +90,8 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, $id)
     {
-        $role = Role::findOrFail($id);
-        $dataUpdate = $request->all();
+        $role = $this->role->update($id, $request->all())->syncPermissions($request->permission_ids);
 
-        $role->permissions()->sync($dataUpdate['permission_ids']);
-
-        Artisan::call('cache:clear');
         \notify("Edit $role->display_name role successfully", null, 'success');
         return \to_route('admin.role.index');
     }
@@ -113,9 +104,9 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Role::destroy($id);
+        $this->role->delete($id);
 
         \notify('Delete role successfully', \null, 'success');
-        return \to_route('role.index');
+        return \to_route('admin.role.index');
     }
 }

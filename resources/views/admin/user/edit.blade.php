@@ -12,8 +12,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="preview" style="width: 200px; height: 200px;"
-                    default="{{ isset($user->images->url) ? asset("storage/{$user->images->url}") : asset('storage/uploads/users/default-user.webp') }}">
+                <div class="preview" style="width: 200px; height: 200px;" default="{{ $user->image_path }}">
                 </div>
 
                 <div class="input-group input-group-static mb-4">

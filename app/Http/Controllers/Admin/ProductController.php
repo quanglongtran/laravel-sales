@@ -5,22 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\ProductDetail;
-use App\Models\User;
+use App\Repositories\Admin\Category\CategoryRepositoryInterface;
+use App\Repositories\Admin\Product\ProductRepositoryInterface;
 use App\Traits\PermissionMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     use PermissionMiddleware;
 
-    public Product $product;
-    public Category $category;
+    public $product;
+    public $category;
 
-    public function __construct(Product $product, Category $category)
+    public function __construct(ProductRepositoryInterface $product, CategoryRepositoryInterface $category)
     {
         $this->category = $category;
         $this->product = $product;
@@ -34,7 +31,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->product->latest('id')->paginate(15);
+        $products = $this->product->getLatest();
 
         return \view('admin.product.index', \compact('products'));
     }
@@ -46,7 +43,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = $this->category->all(['id', 'name']);
+        $categories = $this->category->getAll(['id', 'name']);
 
         return \view('admin.product.create', \compact('categories'));
     }
@@ -59,20 +56,10 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        $product = $this->product->create($request->all());
-        $product->storeImage($request, 'products');
-        $product->assignCategory($request->category_ids);
+        // return $request->all();
+        $this->product->storeProduct($request);
 
-        $details = [];
-        foreach (collect(json_decode($request->input('details')))->toArray() as $key => $value) {
-            $details[$key] = (array) $value;
-            $details[$key]['product_id'] = $product->id;
-            $details[$key]['created_at'] = now()->format('Y-m-d H:i:s');
-            $details[$key]['updated_at'] = now()->format('Y-m-d H:i:s');
-        }
-        DB::table('product_details')->insert($details);
-
-        return \to_route('product.index');
+        return \to_route('admin.product.index');
     }
 
     /**
@@ -83,8 +70,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = $this->product->with(['details', 'categories'])->findOrFail($id);
-        // dd($product->categories->get('name'));
+        $product = $this->product->findOrFail($id, ['details', 'categories']);
 
         return \view('admin.product.show', \compact('product'));
     }
@@ -97,9 +83,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->product->with(['details', 'categories'])->findOrFail($id);
-        $categories = $this->category->all(['id', 'name']);
-        // return ($product);
+        $product = $this->product->findOrFail($id, ['details', 'categories']);
+        $categories = $this->category->getAll(['id', 'name']);
 
         return \view('admin.product.edit', \compact('product', 'categories'));
     }
@@ -113,22 +98,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $product = $this->product->findOrFail($id);
-        $product->updateImage($request, 'products');
-        $product->update($request->all());
-
-        $product->assignCategory($request->category_ids);
-
-        $details = [];
-        foreach (json_decode($request->input('details')) as $key => $value) {
-            $details[$key] = (array) $value;
-            $details[$key]['product_id'] = $product->id;
-            $details[$key]['created_at'] = now()->format('Y-m-d H:i:s');
-            $details[$key]['updated_at'] = now()->format('Y-m-d H:i:s');
-        }
-
-        $product->details()->delete();
-        $product->details()->insert($details);
+        $this->product->updateProduct($request, $id);
 
         return \to_route('admin.product.index');
     }
@@ -141,13 +111,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = $this->product->findOrFail($id);
-
-        $product->details()->delete();
-        $product->deleteImage();
-        $product->delete();
+        $this->product->delete($id, ['details']);
         \notify('Delete product successfully', null, 'success');
 
-        return \to_route('product.index');
+        return \to_route('admin.product.index');
     }
 }

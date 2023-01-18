@@ -43,7 +43,7 @@
         <h1>Create product</h1>
 
         <div>
-            <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" id="form-create">
+            <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data" id="form-create">
                 @csrf
 
                 <div class="preview" style="width: 200px; height: 200px; border-radius: 50%;"></div>

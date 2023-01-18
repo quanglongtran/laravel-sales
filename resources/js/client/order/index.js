@@ -19,11 +19,20 @@ ajaxSetup(options);
                         success: (response) => {
                             if (response.success) {
                                 $(item).parents("tr").remove();
+                                Swal.fire({
+                                    icon: "success",
+                                    text: response.message,
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text:
+                                        response.message +
+                                        "\ntry reloading the page",
+                                    icon: "error",
+                                    footer: "<a href='#' onclick='window.location.reload()'>Reload</a>",
+                                });
                             }
-                            Swal.fire({
-                                icon: response.success ? "success" : "error",
-                                text: response.message,
-                            });
                         },
                     });
                 }

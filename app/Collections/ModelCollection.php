@@ -3,9 +3,6 @@
 namespace App\Collections;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use App\Traits\HandleImageUpLoad;
 
 /**
  * ModelCollection

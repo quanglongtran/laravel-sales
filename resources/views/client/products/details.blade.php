@@ -46,7 +46,7 @@
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner border">
                         <div class="carousel-item active">
-                            <img class="w-100 h-100" src="{{ $product->image }}" alt="Image" id="product-img">
+                            <img class="w-100 h-100" src="{{ $product->image_path }}" alt="Image" id="product-img">
                         </div>
 
                     </div>
@@ -202,5 +202,5 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/js/product/show.js')
+    @vite('resources/js/client/product/show.js')
 @endsection

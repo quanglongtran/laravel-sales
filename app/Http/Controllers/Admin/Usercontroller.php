@@ -7,15 +7,17 @@ use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
-use App\Traits\PermissionMidleware;
+use App\Repositories\Admin\Role\RoleRepositoryInterface;
+use App\Repositories\Admin\User\UserRepositoryInterface;
+use App\Traits\PermissionMiddleware;
 
 class Usercontroller extends Controller
 {
-    use PermissionMidleware;
-    protected User $user;
-    protected Role $role;
+    use PermissionMiddleware;
+    protected $user;
+    protected $role;
 
-    public function __construct(User $user, Role $role)
+    public function __construct(UserRepositoryInterface $user, RoleRepositoryInterface $role)
     {
         $this->user = $user;
         $this->role = $role;
@@ -29,7 +31,7 @@ class Usercontroller extends Controller
      */
     public function index()
     {
-        $users = $this->user->latest('id')->paginate(15);
+        $users = $this->user->getLatest('id', ['images']);
 
         return \view('admin.user.index', \compact('users'));
     }
@@ -41,7 +43,8 @@ class Usercontroller extends Controller
      */
     public function create()
     {
-        $roles = $this->role->all()->groupBy('group');
+        // $roles = $this->role->all()->groupBy('group');
+        $roles = $this->role->getAll()->groupBy('group');
 
         return \view('admin.user.create', \compact('roles'));
     }
@@ -54,10 +57,7 @@ class Usercontroller extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $user = $this->user->create(\array_merge($request->all(), ['password' => \bcrypt($request->password)]));
-        $path_avatar = $this->user->storeImage($request, 'users');
-        $user->images()->create(['url' => $path_avatar]);
-        $user->assignRole($request->role_ids);
+        $this->user->storeUser($request);
 
         return \to_route('admin.user.index');
     }
@@ -81,9 +81,9 @@ class Usercontroller extends Controller
      */
     public function edit($id)
     {
-        $user = $this->user->findOrFail($id)->load('roles');
-        // return ($user);
-        $roles = $this->role->all()->groupBy('group');
+        $user = $this->user->findOrFail($id, ['roles', 'images']);
+
+        $roles = $this->role->getAll()->groupBy('group');
 
         return \view('admin.user.edit', \compact('user', 'roles'));
     }
@@ -97,16 +97,8 @@ class Usercontroller extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $user = $this->user->findOrFail($id)->load('roles');
-        $password = $request->password ? \bcrypt($request->password) : $user->password;
-
-        if (!is_null($request->avatar) && $request->hasFile('avatar')) {
-            // $user->images()->delete();
-            $user->updateImage($request);
-        }
-
-        $user->update(\array_merge($request->all(), \compact('password')));
-        $user->syncRoles($request->role_ids);
+        // return $request->all();
+        $this->user->updateUser($request, $id);
 
         return \to_route('admin.user.index');
     }
@@ -119,8 +111,7 @@ class Usercontroller extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->user->findOrFail($id);
-        $user->deleteImage($user->images->count() > 0 ? $user->images->url : '')->delete();
+        $this->user->delete($id);
         \notify('Delete user successfully', \null, 'success');
         return to_route('admin.user.index');
     }

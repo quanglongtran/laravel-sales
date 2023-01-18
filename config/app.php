@@ -208,6 +208,8 @@ return [
         //DebuggerServiceProvider
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        //RepositoryServiceProvider
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

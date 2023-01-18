@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
+use App\Repositories\Client\Product\ProductRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     public $product;
-    public $category;
 
     /**
      * __construct
@@ -20,10 +17,9 @@ class ProductController extends Controller
      * @param  mixed $product
      * @return void
      */
-    public function __construct(Product $product, Category $category)
+    public function __construct(ProductRepositoryInterface $product)
     {
         $this->product = $product;
-        $this->category = $category;
     }
 
     /**
@@ -38,12 +34,10 @@ class ProductController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            $products = $this->product->getBy($request->all(), $request->category_id);
+            $products = $this->product->getByCategory($request->all(), $request->category_id);
         } else {
-            $products = $this->product->with('images')->latest('id')->paginate(12);
+            $products = $this->product->getLatest('id', ['images']);
         }
-
-        $this->getImage($products->items());
 
         return view('client.home.index', \compact('products'));
     }
@@ -77,10 +71,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = $this->product->with('details')->find($id);
-        $this->getImage($product);
-
-        // return $product;
+        $product = $this->product->findOrFail($id, ['images']);
 
         return view('client.products.details', compact('product'));
     }
@@ -117,22 +108,5 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * getImage
-     *
-     * @param  array|object $data
-     * @return void
-     */
-    public function getImage($data)
-    {
-        if (\is_array($data)) {
-            foreach ($data as $value) {
-                $value->image = \getImage($value);
-            }
-        } else {
-            $data->image = \getImage($data);
-        }
     }
 }

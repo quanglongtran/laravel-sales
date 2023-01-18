@@ -77,38 +77,8 @@
             </div>
         </div>
     </div>
-
-    <script>
-        (function() {
-            var categoryId;
-
-            // Array.from(document.getElementsByClassName('btn-submit-delete-modal')).forEach((item) => {
-            //     item.onclick = () => {
-            //         getCategory(
-            //             item.getAttribute('data-coupon-id'),
-            //             item.getAttribute('data-coupon-name')
-            //         )
-            //     }
-            // });
-
-            // document.getElementById('save').onclick = () => {
-            //     deleteCategory()
-            // };
-
-            // function getCategory(id, name) {
-            //     document.getElementById('modal-delete-text').innerText = `Delete ${name}`
-            //     categoryId = id;
-            // }
-
-            // function deleteCategory() {
-            //     document.getElementById(`coupon-form-delete-${categoryId}`).submit()
-            // }
-
-
-        })();
-    </script>
 @endsection
 
 @section('scripts')
-    @vite('resources/js/coupon/index.js')
+    @vite('resources/js/admin/coupon/index.js')
 @endsection

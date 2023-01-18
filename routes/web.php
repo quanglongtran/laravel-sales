@@ -8,11 +8,12 @@
 */
 
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\Usercontroller;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\AuthController;
 // ----------------------------------------------------------------
 
 /*
@@ -30,10 +31,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CartProductController;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\CouponController;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Container\Container;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,15 +52,23 @@ use App\Models\User;
 */
 
 Route::any('test', function () {
-    foreach (config('order.status') as $status) {
-        echo $status;
-    }
+    dd(Auth::guard('web')->check());
 });
 
 Route::get('/', function () {
     return view('welcome');
 });
-Auth::routes();
+
+// Auth::routes();
+
+Route::group([], function () {
+    Route::get('login', [AuthController::class, 'loginView'])->middleware('guest:web')->name('login-view');
+    Route::view('register', 'auth.register')->middleware('guest:web');
+    Route::view('dashboard', 'dashboard')->name('dashboard')->middleware('auth');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::view('dashboard', 'admin.dashboard.index')->name('dashboard');
@@ -63,7 +76,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('user', Usercontroller::class);
     Route::resource('category', CategoryController::class);
     Route::resource('product', AdminProductController::class);
-    Route::resource('coupon', CouponController::class);
+    Route::resource('coupon', AdminCouponController::class);
     Route::get('order', [AdminOrderController::class, 'index'])->name('order.index');
     Route::put('order-update-status', [AdminOrderController::class, 'updateStatus'])->middleware('update-order')->name('order.update-status');
 });
@@ -71,8 +84,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 Route::resource('product', ProductController::class);
 
 Route::prefix('cart')->name('cart.')->middleware('auth')->group(function () {
-    Route::post('update/{id}', [CartController::class, 'updateQuantity'])->name('update-quantity');
-    Route::post('counpon', [CartController::class, 'applyCoupon'])->name('apply-coupon');
+    Route::post('update/{id}', [CartProductController::class, 'update'])->name('update-quantity');
+    Route::post('counpon', [CouponController::class, 'apply'])->name('apply-coupon');
     Route::get('checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::post('checkout-handle', [CartController::class, 'checkoutHandle'])->name('checkout-handle');
 });

@@ -138,5 +138,5 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/js/cart/index.js')
+    @vite('resources/js/client/cart/index.js')
 @endsection
