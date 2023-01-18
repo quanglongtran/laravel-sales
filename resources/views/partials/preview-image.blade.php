@@ -101,13 +101,13 @@
 
 
 <script>
-    function appendPreviewFrame(nodeElement, inputName = '') {
+    function appendPreviewFrame(nodeElement, inputName = '', title = 'Drop file to upload') {
 
         $(nodeElement).append(`
             <label class="preview__frame-{{ $module }}">
                 <div class="preview__center-{{ $module }}">
                     <div class="preview__title-{{ $module }}">
-                        <h5>Drop file to upload</h5>
+                        <h5>${title}</h5>
                     </div>
 
                     <div class="preview__dropzone-{{ $module }}">

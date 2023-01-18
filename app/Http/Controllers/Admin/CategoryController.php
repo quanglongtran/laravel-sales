@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategory;
 use App\Http\Requests\Category\UpdateCategory;
-use App\Models\Category;
+use App\Repositories\Admin\Category\CategoryRepositoryInterface;
 use App\Traits\PermissionMiddleware;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
     use PermissionMiddleware;
-    protected $category;
+    private $category;
 
-    public function __construct(Category $category)
+    public function __construct(CategoryRepositoryInterface $category)
     {
         $this->category = $category;
         $this->setMidleware('category');
@@ -27,7 +27,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->category->latest('id')->paginate(15);
+        $categories = $this->category->getLatest('id');
+
         return \view('admin.category.index', \compact('categories'));
     }
 
@@ -74,11 +75,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = $this->category->with('children')->with('parent')->find($id);
-        // dd($category->parent);
-        $parentCategories = $this->category->getParents();
-
-        return \view('admin.category.edit', \compact('category', 'parentCategories'));
+        return \view('admin.category.edit', $this->category->edit($id));
     }
 
     /**
@@ -90,8 +87,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategory $request, $id)
     {
-        $this->category->findOrFail($id)->update($request->all());
-        return \to_route('category.index');
+        $this->category->update($id, $request->all());
+        return \to_route('admin.category.index');
     }
 
     /**
@@ -102,10 +99,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $this->category->children()->delete();
-        $this->category->destroy($id);
+        $this->category->delete($id, ['children']);
 
         \notify('Delete category successfully', null, 'success');
-        return \to_route('category.index');
+        return \to_route('admin.category.index');
     }
 }

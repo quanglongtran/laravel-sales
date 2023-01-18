@@ -2,6 +2,9 @@
 
 @section('title', 'Cart page')
 
+@php
+    $user = auth()->user();
+@endphp
 
 @section('content')
     <div class="container-fluid">
@@ -12,8 +15,8 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Name</label>
-                            <input class="form-control" value="{{ old('customer_name') }}" name="customer_name" type="text"
-                                placeholder="John">
+                            <input class="form-control" value="{{ old('customer_name') ?? $user->name }}" name="customer_name"
+                                type="text" placeholder="John">
                             @error('customer_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror ()
@@ -23,8 +26,9 @@
 
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
-                            <input class="form-control" name="customer_email" value="{{ old('customer_email') }}"
-                                type="text" placeholder="example@email.com">
+                            <input class="form-control" name="customer_email"
+                                value="{{ old('customer_email') ?? $user->email }}" type="text"
+                                placeholder="example@email.com">
                             @error('customer_email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror ()
@@ -34,8 +38,9 @@
 
                         <div class="col-md-6 form-group">
                             <label>Phone Number</label>
-                            <input class="form-control" name="customer_phone" value="{{ old('customer_phone') }}"
-                                type="text" placeholder="+123 456 789">
+                            <input class="form-control" name="customer_phone"
+                                value="{{ old('customer_phone') ?? $user->phone }}" type="text"
+                                placeholder="+123 456 789">
                             @error('customer_phone')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror ()
@@ -45,8 +50,9 @@
 
                         <div class="col-md-6 form-group">
                             <label>Address </label>
-                            <input class="form-control" name="customer_address" value="{{ old('customer_address') }}"
-                                type="text" placeholder="123 Street">
+                            <input class="form-control" name="customer_address"
+                                value="{{ old('customer_address') ?? $user->address }}" type="text"
+                                placeholder="123 Street">
                             @error('customer_address')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror ()
@@ -139,5 +145,5 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/js/cart/checkout.js')
+    @vite('resources/js/client/cart/checkout.js')
 @endsection

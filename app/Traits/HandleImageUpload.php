@@ -8,19 +8,18 @@ use Intervention\Image\Facades\Image;
 trait HandleImageUpLoad
 {
     private string $path = 'uploads';
-    private array $requestNames = ['avatar', 'image'];
+    private array $requestNames = ['avatar', 'image', 'photo'];
 
     /**
      * Store an user image.
      * 
      * @param \Illuminate\Http\Request $request
-     * @param string folder
      * @return string
      */
-    function storeImage($request, string $folder)
+    function storeImage($request)
     {
         if ($avatar = $this->checkValidRequest($request)) {
-            $path = "$this->path/$folder/{$this->id}_" . time() . "{$avatar->getClientOriginalName()}";
+            $path = "$this->path/{$this->modelName}/{$this->model->id}_" . time() . "{$avatar->getClientOriginalName()}";
             Image::make($avatar)->fit(300)->save("storage/$path");
             $this->savePath($path);
             return $path;
@@ -31,15 +30,14 @@ trait HandleImageUpLoad
      * Update an image.
      * 
      * @param \Illuminate\Http\Request $request
-     * @param string $folder
      * @return string
      */
-    public function updateImage($request, string $folder)
+    public function updateImage($request)
     {
         if ($this->checkValidRequest($request)) {
             $this->deleteImage();
 
-            $path = $this->storeImage($request, $folder);
+            $path = $this->storeImage($request);
             return $path;
         }
     }
@@ -52,13 +50,13 @@ trait HandleImageUpLoad
      */
     public function deleteImage()
     {
-        if (isset($this->images->url)) {
-            $name = $this->images->url;
+        if (isset($this->model->images->url) && $this->model->images->url) {
+            $name = $this->model->images->url;
             if (\file_exists(\public_path('storage/' . $name))) {
                 \unlink('storage/' . $name);
             }
 
-            $this->images()->delete();
+            $this->model->images()->delete();
         }
     }
 
@@ -69,11 +67,7 @@ trait HandleImageUpLoad
      */
     private function savePath(string $path)
     {
-        try {
-            $this->images()->create(['url' => $path]);
-        } catch (\Exception) {
-            throw new Exception('You must call this method from valid model!!');
-        }
+        $this->model->images()->create(['url' => $path]);
     }
 
     /**
@@ -86,7 +80,7 @@ trait HandleImageUpLoad
     {
         foreach ($request->allFiles() as $key => $file) {
             if (\collect($this->requestNames)->contains($key)) {
-                if (!is_null($this->id)) {
+                if (!is_null($this->model->id)) {
                     return $request->file($key);
                 }
 

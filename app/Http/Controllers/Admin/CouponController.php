@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Coupon\CreateCouponRequest;
 use App\Http\Requests\Coupon\UpdateCouponRequest;
 use App\Models\Coupon;
+use App\Repositories\Admin\Coupon\CouponRepositoryInterface;
 use App\Traits\PermissionMiddleware;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class CouponController extends Controller
 
     protected $coupon;
 
-    public function __construct(Coupon $coupon)
+    public function __construct(CouponRepositoryInterface $coupon)
     {
         $this->coupon = $coupon;
         $this->setMidleware('coupon');
@@ -29,7 +30,7 @@ class CouponController extends Controller
      */
     public function index()
     {
-        $coupons = $this->coupon->latest('id')->paginate();
+        $coupons = $this->coupon->getLatest();
 
         return view('admin.coupon.index', compact('coupons'));
     }
@@ -90,8 +91,7 @@ class CouponController extends Controller
      */
     public function update(UpdateCouponRequest $request, $id)
     {
-        $coupon = $this->coupon->findOrFail($id);
-        $coupon->update($request->all());
+        $this->coupon->update($id, $request->all());
 
         return redirect(route('admin.coupon.index'));
     }
@@ -104,7 +104,7 @@ class CouponController extends Controller
      */
     public function destroy($id)
     {
-        $this->coupon->destroy($id);
+        $this->coupon->delete($id);
         \notify('Delete coupon successfully', null, 'success');
         return redirect(route('admin.coupon.index'));
     }

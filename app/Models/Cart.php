@@ -33,7 +33,7 @@ class Cart extends Model
 
     public function getBy($user_id)
     {
-        return Cart::whereUserId($user_id)->first();
+        return $this->whereUserId($user_id)->first();
     }
 
     public function firstOrCreateBy($user_id)
