@@ -110,6 +110,12 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Client\Coupon\CouponRepository::class
         );
 
+        // User
+        $this->app->singleton(
+            \App\Repositories\Client\User\UserRepositoryInterface::class,
+            \App\Repositories\Client\User\UserRepository::class
+        );
+
 
 
 

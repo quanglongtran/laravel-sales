@@ -11,6 +11,8 @@
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
+                            <input type="hidden" name="url_from" value="{{ $url_from ?? null }}">
+
                             <div class="row mb-3">
                                 <label for="account"
                                     class="col-md-4 col-form-label text-md-end">{{ __('Email Or phone number') }}</label>

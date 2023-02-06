@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Auth;
 
+use App\Jobs\VerifyEmail;
 use App\Repositories\BaseRepository;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AuthRepository implements AuthRepositoryInterface
@@ -23,5 +25,15 @@ class AuthRepository implements AuthRepositoryInterface
     public function logout()
     {
         Auth::logout();
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        VerifyEmail::dispatch(Auth::user());
+    }
+
+    public function verify($request)
+    {
+        $request->fulfill();
     }
 }

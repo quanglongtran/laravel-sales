@@ -15,6 +15,7 @@ export default defineConfig({
                 "resources/js/client/cart/checkout.js",
                 "resources/js/client/order/index.js",
                 "resources/js/client/product/show.js",
+                "resources/js/client/dashboard/edit.js",
 
                 // admin side
                 "resources/js/admin/order/index.js",
