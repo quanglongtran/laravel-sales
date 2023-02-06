@@ -12,6 +12,8 @@
                         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                             @csrf
 
+                            <input type="hidden" name="url_from" value="{{ $url_from ?? null }}">
+
                             <div class="row mb-3 justify-content-center">
                                 <div class="preview col-auto" style="width: 200px; height: 200px; border-radius: 50%"></div>
                             </div>

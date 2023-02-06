@@ -54,7 +54,7 @@
                     @if (!auth()->check())
                         <div class="navbar-nav ml-auto py-0">
                             <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
-                            <a href="{{ route('logout') }}" class="nav-item nav-link">Register</a>
+                            <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
                         </div>
                     @else
                         <div class="navbar-nav ml-auto py-0">

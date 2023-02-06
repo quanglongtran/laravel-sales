@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\Usercontroller;
+use App\Http\Controllers\Admin\UserController as AdminUsercontroller;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\AuthController;
 // ----------------------------------------------------------------
@@ -24,21 +24,15 @@ use App\Http\Controllers\AuthController;
 */
 
 use App\Http\Controllers\Client\ProductController;
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CartProductController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\CouponController;
-use App\Models\Cart;
-use App\Models\Coupon;
+use App\Http\Controllers\Client\UserController;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
-use Illuminate\Container\Container;
+use App\Jobs\VerifyEmail;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +46,7 @@ use Illuminate\Container\Container;
 */
 
 Route::any('test', function () {
-    dd(Auth::guard('web')->check());
+    return intval('123aasdasd');
 });
 
 Route::get('/', function () {
@@ -64,16 +58,31 @@ Route::get('/', function () {
 Route::group([], function () {
     Route::get('login', [AuthController::class, 'loginView'])->middleware('guest:web')->name('login-view');
     Route::view('register', 'auth.register')->middleware('guest:web');
-    Route::view('dashboard', 'dashboard')->name('dashboard')->middleware('auth');
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::resource('dashboard', UserController::class)->middleware('auth');
+
+    Route::group([
+        'prefix' => 'verify',
+        'as' => 'verification.'
+    ], function () {
+        Route::any('send', [AuthController::class, 'sendEmailVerificationNotification'])->name('send');
+        Route::get('verify/{id}/{hash}', [AuthController::class, 'verify'])->middleware(['auth', 'signed'])->name('verify');
+    });
+
+
+    // Route::prefix('dashboard')->middleware('auth')->group(function () {
+    //     Route::view('/', 'client.dashboard.dashboard')->name('dashboard');
+    //     Route::view('/', 'client.dashboard.dashboard')->name('dashboard');
+    // });
 });
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::view('dashboard', 'admin.dashboard.index')->name('dashboard');
     Route::resource('role', RoleController::class);
-    Route::resource('user', Usercontroller::class);
+    Route::resource('user', AdminUsercontroller::class);
     Route::resource('category', CategoryController::class);
     Route::resource('product', AdminProductController::class);
     Route::resource('coupon', AdminCouponController::class);
