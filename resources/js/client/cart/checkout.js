@@ -17,8 +17,8 @@ import $ from "jquery";
         $(".total-price").each(function (index, item) {
             price += Number($(item).text());
         });
-        $(".sub-total-price").text(price);
-        $(".final-price").text(price - Number($(".coupon-value").text()));
+        var finalPrice = price - Number($(".coupon-value").text());
+        $(".final-price").text(finalPrice >= 0 ? finalPrice : 0);
     }
 
     totalPriceFn();

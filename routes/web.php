@@ -33,6 +33,7 @@ use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\UserController;
 use App\Models\User;
 use App\Jobs\VerifyEmail;
+use Illuminate\Support\Facades\Cookie;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,7 @@ use App\Jobs\VerifyEmail;
 */
 
 Route::any('test', function () {
-    return intval('123aasdasd');
+    return Cookie::get('remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
 });
 
 Route::get('/', function () {
@@ -87,7 +88,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('product', AdminProductController::class);
     Route::resource('coupon', AdminCouponController::class);
     Route::get('order', [AdminOrderController::class, 'index'])->name('order.index');
-    Route::put('order-update-status', [AdminOrderController::class, 'updateStatus'])->middleware('update-order')->name('order.update-status');
+    // Route::put('order-update-status', [AdminOrderController::class, 'updateStatus'])->middleware('update-order')->name('order.update-status');
+    Route::put('order-update-status', [AdminOrderController::class, 'updateStatus'])->name('order.update-status');
 });
 
 Route::resource('product', ProductController::class);

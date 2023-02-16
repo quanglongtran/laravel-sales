@@ -1,5 +1,5 @@
 import $ from "jquery";
-import SendAction from "@utilities";
+import { SendAction } from "@utilities";
 
 const DeleteAction = new SendAction();
 
