@@ -14,6 +14,7 @@ $(function () {
                 status: $(this).val(),
             },
             success: (response) => {
+                console.log(response);
                 if (!response.success) {
                     Swal.fire({
                         title: "Error!",

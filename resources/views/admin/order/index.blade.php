@@ -30,10 +30,11 @@
                             @endforeach
                         </select>
                     </td>
+                    <td>{{ $order->total }}</td>
                     <td>{{ $order->ship }}</td>
                     <td>{{ $order->customer_name }}</td>
                     <td>{{ $order->customer_email }}</td>
-                    <td>{{ $order->customer_adress }}</td>
+                    <td>{{ $order->customer_address }}</td>
                     <td>{{ $order->note }}</td>
                     <td>Cash</td>
                 </tr>

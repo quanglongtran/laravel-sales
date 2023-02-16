@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('customer_email');
             $table->string('customer_phone');
             $table->text('customer_address');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->timestamps();
 
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();

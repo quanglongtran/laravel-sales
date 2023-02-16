@@ -92,10 +92,4 @@ class AuthController extends Controller
         notify('Email verification successful', null, 'success');
         return \redirect()->route('dashboard.index');
     }
-
-    public function __destruct()
-    {
-        '1100';
-        echo 123;
-    }
 }

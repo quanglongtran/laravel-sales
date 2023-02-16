@@ -32,8 +32,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            "@utilities": path.resolve(__dirname, "./resources/js/utilities"),
-            "@config": path.resolve(__dirname, "./resources/js/config"),
+            "@utilities": path.resolve(__dirname, "./resources/js/utilities/"),
+            "@config": path.resolve(__dirname, "./resources/js/config/"),
         },
     },
 });

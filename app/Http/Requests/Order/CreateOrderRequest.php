@@ -27,7 +27,7 @@ class CreateOrderRequest extends FormRequest
             'customer_name' => 'required',
             'customer_email' => 'required',
             'customer_phone' => 'required',
-            'customer_address' => 'required',
+            'customer_address' => 'required'
         ];
     }
 }

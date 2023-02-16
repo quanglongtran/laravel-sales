@@ -1,12 +1,8 @@
 import $ from "jquery";
 import Swal from "sweetalert2";
-import SendAction from "@utilities";
+import { ajaxSetup, options } from "@config";
 
-$.ajaxSetup({
-    headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    },
-});
+ajaxSetup(options);
 
 (function () {
     function totalPriceFn(couponVal) {
@@ -22,7 +18,8 @@ $.ajaxSetup({
             price += Number($(item).text());
         });
         $(".sub-total-price").text(price);
-        $(".final-price").text(price - Number($(".coupon-value").text()));
+        var finalPrice = price - Number($(".coupon-value").text());
+        $(".final-price").text(finalPrice >= 0 ? finalPrice : 0);
     }
     class Main {
         constructor(row) {
