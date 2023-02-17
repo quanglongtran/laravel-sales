@@ -31,6 +31,7 @@ use App\Http\Controllers\Client\CartProductController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\UserController;
+use App\Http\Controllers\PasswordController;
 use App\Models\User;
 use App\Jobs\VerifyEmail;
 use Illuminate\Support\Facades\Cookie;
@@ -47,7 +48,7 @@ use Illuminate\Support\Facades\Cookie;
 */
 
 Route::any('test', function () {
-    return Cookie::get('remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+    return view('auth.passwords.reset');
 });
 
 Route::get('/', function () {
@@ -74,10 +75,12 @@ Route::group([], function () {
     });
 
 
-    // Route::prefix('dashboard')->middleware('auth')->group(function () {
-    //     Route::view('/', 'client.dashboard.dashboard')->name('dashboard');
-    //     Route::view('/', 'client.dashboard.dashboard')->name('dashboard');
-    // });
+    Route::prefix('password')->name('password.')->middleware('guest')->group(function () {
+        Route::get('forgot', [PasswordController::class, 'forgotPasswordView'])->name('request');
+        Route::post('forgot', [PasswordController::class, 'forgotPasswordHandle'])->name('handle');
+        Route::get('forgot/callback', [PasswordController::class, 'resetPasswordView'])->name('callback')->middleware('signed');
+        Route::patch('update', [PasswordController::class, 'updatePassword'])->name('update');
+    });
 });
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
@@ -107,5 +110,3 @@ Route::prefix('order')->name('order.')->group(function () {
 });
 
 Route::resource('cart', CartController::class);
-
-// Route::get('/home', [App\Http\Controllers\Client\HomeController::class, 'index'])->name('home');

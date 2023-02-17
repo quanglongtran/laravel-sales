@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Jobs\ForgotPassword;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Repositories\Admin\User\UserRepositoryInterface;
 use App\Repositories\Auth\AuthRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -58,9 +65,6 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // ['account' => 'These credentials do not match our records.']
-
-
         if ($validator->fails()) {
             return \back()->withErrors($validator->errors());
         }
@@ -69,7 +73,7 @@ class AuthController extends Controller
             return \back()->withErrors(['account' => 'These credentials do not match our records.']);
         }
 
-        return \redirect($request->url_from ?? route('dashboard'));
+        return redirect()->intended(route('dashboard.index'));
     }
 
     public function logout()
@@ -92,4 +96,6 @@ class AuthController extends Controller
         notify('Email verification successful', null, 'success');
         return \redirect()->route('dashboard.index');
     }
+
+    
 }

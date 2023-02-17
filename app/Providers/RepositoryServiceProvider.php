@@ -32,9 +32,10 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Client\Order\OrderRepositoryInterface::class => \App\Repositories\Client\Order\OrderRepository::class,
             \App\Repositories\Client\Coupon\CouponRepositoryInterface::class => \App\Repositories\Client\Coupon\CouponRepository::class,
             \App\Repositories\Client\User\UserRepositoryInterface::class => \App\Repositories\Client\User\UserRepository::class,
-
+            
             // Auth Repository
-            \App\Repositories\Auth\AuthRepositoryInterface::class => \App\Repositories\Auth\AuthRepository::class
+            \App\Repositories\Auth\AuthRepositoryInterface::class => \App\Repositories\Auth\AuthRepository::class,
+            \App\Repositories\Auth\PasswordRepositoryInterface::class => \App\Repositories\Auth\PasswordRepository::class,
         ];
 
         foreach ($repositories as $interface => $class) {

@@ -1,6 +1,6 @@
 @php
     foreach (optional(session()->get('errors'))->keys() ?? [] as $key => $message) {
-        notify($message, null, 'error');
+        // notify($message, null, 'error');
     }
     
 @endphp
