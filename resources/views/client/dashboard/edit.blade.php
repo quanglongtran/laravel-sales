@@ -8,14 +8,24 @@
 @endsection
 
 @section('content')
+    @include('partials.preview-image')
     <h1 class="text-center">Edit</h1>
     <div id="url-edit-form" style="display: none">{{ route('dashboard.update', $user->id) }}</div>
 
     <div class="container-fluid" method="POST" action="{{ route('login') }}">
 
-        <input type="hidden" name="url_from" value="{{ $url_from ?? null }}">
-
         <div class="row mb-3">
+            <div class="col-md-4 offset-4">
+                <form action="{{ route('dashboard.update', $user->id) }}" class="preview" style="width: 200px; height: 200px;"
+                    default="{{ $user->image_path }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                </form>
+            </div>
+        </div>
+
+        <div class="row
+                    mb-3">
             <label for="name" class="col-md-3 col-form-label text-md-end">{{ __('Your name') }}</label>
 
             <div class="col-md-7">
@@ -121,4 +131,7 @@
 @section('scripts')
     <script src="https://kit.fontawesome.com/b7bb695d24.js" crossorigin="anonymous"></script>
     @vite('resources/js/client/dashboard/edit.js')
+    <script>
+        appendPreviewFrame(document.getElementsByClassName('preview')[0], 'avatar');
+    </script>
 @endsection

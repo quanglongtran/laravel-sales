@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Client\Product\ProductRepository;
+use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller

@@ -6,7 +6,15 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 interface AuthRepositoryInterface
-{
+{    
+    /**
+     * register
+     *
+     * @param  array $request
+     * @return \App\Models\User
+     */
+    public function register(array $attributes);
+    
     /**
      * login
      *
@@ -14,7 +22,12 @@ interface AuthRepositoryInterface
      * @return void
      */
     public function login(Request $request);
-
+    
+    /**
+     * logout
+     *
+     * @return void
+     */
     public function logout();
 
     /**

@@ -25,12 +25,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'phone' => 'required',
             'gender' => 'required',
             'avatar' => 'nullable|image|mimes:png,jpg,PNG,jpeg,webp',
             'password' => 'confirmed',
             'email' => 'required|email',
-            'phone' => 'required',
         ];
     }
 
@@ -48,7 +46,5 @@ class UpdateUserRequest extends FormRequest
             }
             return;
         }
-
-        \notify('Update user successfully', \null, 'success');
     }
 }

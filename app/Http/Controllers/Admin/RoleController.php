@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
-use App\Repositories\Admin\Permission\PermissionRepositoryInterface;
-use App\Repositories\Admin\Role\RoleRepositoryInterface;
+use App\Repositories\Permission\PermissionRepositoryInterface;
+use App\Repositories\Role\RoleRepositoryInterface;
 
 class RoleController extends Controller
 {
@@ -51,7 +51,7 @@ class RoleController extends Controller
     {
         $role = $this->role->storeRole($request->all(), $request->permission_ids);
 
-        \notify("Create $role->display_name role successfully", '', 'success');
+        \successNotify("Create $role->display_name role successfully");
         return \to_route('admin.role.index');
     }
 
@@ -92,7 +92,7 @@ class RoleController extends Controller
     {
         $role = $this->role->update($id, $request->all())->syncPermissions($request->permission_ids);
 
-        \notify("Edit $role->display_name role successfully", null, 'success');
+        \successNotify("Edit $role->display_name role successfully");
         return \to_route('admin.role.index');
     }
 
@@ -106,7 +106,7 @@ class RoleController extends Controller
     {
         $this->role->delete($id);
 
-        \notify('Delete role successfully', \null, 'success');
+        \successNotify('Delete role successfully');
         return \to_route('admin.role.index');
     }
 }

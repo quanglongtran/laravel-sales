@@ -31,13 +31,27 @@ class ResetCommand extends Command
     {
         Artisan::call('migrate:fresh', ['--seed' => true]);
 
-        $path = public_path('storage/uploads/');
+        $exceptFolders = [
+            '.', '..', 'default'
+        ];
+        
+        $exceptFiles = [
+            '.', '..', 'default.jpg', 'default-user.webp'
+        ];
+
+        $path = public_path('storage/uploads');
         $upload = scandir($path);
         foreach ($upload as $value) {
-            if ($value != '.' && $value != '..' && $value != 'default') {
+            // if ($value != '.' && $value != '..' && $value != 'default') {
+            if (!in_array($value, $exceptFolders)) {
                 foreach (scandir("$path/$value") as $file) {
-                    if ($file != 'default.jpg' && $file != '.' && $file != '..' && $file != 'default-user.webp') {
+                    // if ($file != 'default.jpg' && $file != '.' && $file != '..' && $file != 'default-user.webp') {
+                    if (!in_array($file, $exceptFiles)) {
                         Storage::delete("public/uploads/$value/$file");
+                        // if (\file_exists("storage/uploads/$value/$file")) {
+                        if (\file_exists("$path/$value/$file")) {
+                            \unlink("$path/$value/$file");
+                        }
                     }
                 }
             }

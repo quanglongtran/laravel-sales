@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Repositories\Client\User\UserRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,12 +79,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return \response()->json([], 500);
-        if ($this->user->update($id, $request->all())) {
-            return \jsonResponse(true, 'Your information has been successfully updated', ['request' => $request->all()]);
+        $user = $this->user->updateUser($request, $id);
+        
+        $message = $user ? 'Your information has been successfully updated' : 'An error occurred, please try again later!';
+        
+        if (!$request->ajax()) {
+            \myNotify(['message' => $message, 'type' => $user ? 'success' : 'error']);
+            return \back();
         }
 
-        return \jsonResponse(false, 'An error occurred, please try again later!');
+        return \jsonResponse(!!$user, $message, ['request' => $request->all()]);
     }
 
     /**

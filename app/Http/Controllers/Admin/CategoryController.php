@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategory;
 use App\Http\Requests\Category\UpdateCategory;
-use App\Repositories\Admin\Category\CategoryRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Traits\PermissionMiddleware;
 use Illuminate\Support\Facades\DB;
 
@@ -53,6 +53,7 @@ class CategoryController extends Controller
     public function store(CreateCategory $request)
     {
         $this->category->create($request->all());
+        \successNotify('Create a successful category');
         return \to_route('category.index');
     }
 
@@ -88,6 +89,7 @@ class CategoryController extends Controller
     public function update(UpdateCategory $request, $id)
     {
         $this->category->update($id, $request->all());
+        \successNotify('Category update successful');
         return \to_route('admin.category.index');
     }
 
@@ -101,7 +103,7 @@ class CategoryController extends Controller
     {
         $this->category->delete($id, ['children']);
 
-        \notify('Delete category successfully', null, 'success');
+        \successNotify('Delete category successfully');
         return \to_route('admin.category.index');
     }
 }

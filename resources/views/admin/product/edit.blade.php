@@ -48,7 +48,9 @@
                 @method('PUT')
 
                 <div class="preview" style="width: 200px; height: 200px;"
-                    default="{{ isset($product->images->url) ? asset("storage/{$product->images->url}") : asset('storage/uploads/products/default.jpg') }}">
+                    default="{{ $product->image_path }}">
+                {{-- <div class="preview" style="width: 200px; height: 200px;"
+                    default="{{ isset($product->images->url) ? asset("storage/{$product->images->url}") : asset('storage/uploads/products/default.jpg') }}"> --}}
                 </div>
 
                 <div class="input-group input-group-static mb-4">
@@ -144,8 +146,7 @@
                                                 value="{{ json_decode($product->details)[0]->quantity ?? '' }}">
                                         </div>
 
-                                        <div class="btn btn-danger d-flex justify-content-center m-0 disabled"
-                                            onclick="deleteInputGroup($(this))" style="flex: 1;">x
+                                        <div class="btn btn-danger d-flex justify-content-center m-0 disabled deleteInputGroupBtn" style="flex: 1;">x
                                         </div>
                                     </div>
                                 </div>
@@ -165,13 +166,13 @@
 @section('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/super-build/ckeditor.js"></script>
 
-    @vite('resources/js/product/edit.js')
+    @vite('resources/js/admin/product/edit.js')
 
     <script>
         var productDetails = @json($product->details);
-        for (let i in productDetails) {
-            if (i == 0) continue;
-            addInputGroup(productDetails[i].size, productDetails[i].quantity);
-        }
+        // for (let i in productDetails) {
+        //     if (i == 0) continue;
+        //     addInputGroup(productDetails[i].size, productDetails[i].quantity);
+        // }
     </script>
 @endsection

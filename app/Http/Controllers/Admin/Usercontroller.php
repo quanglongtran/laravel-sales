@@ -7,8 +7,8 @@ use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
-use App\Repositories\Admin\Role\RoleRepositoryInterface;
-use App\Repositories\Admin\User\UserRepositoryInterface;
+use App\Repositories\Role\RoleRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use App\Traits\PermissionMiddleware;
 
 class Usercontroller extends Controller
@@ -58,7 +58,7 @@ class Usercontroller extends Controller
     public function store(CreateUserRequest $request)
     {
         $this->user->storeUser($request);
-
+        \successNotify('Create user successfully');
         return \to_route('admin.user.index');
     }
 
@@ -99,7 +99,7 @@ class Usercontroller extends Controller
     {
         // return $request->all();
         $this->user->updateUser($request, $id);
-
+        \successNotify('User update successful');
         return \to_route('admin.user.index');
     }
 
@@ -112,7 +112,7 @@ class Usercontroller extends Controller
     public function destroy($id)
     {
         $this->user->delete($id);
-        \notify('Delete user successfully', \null, 'success');
+        \successNotify('Delete user successfully');
         return to_route('admin.user.index');
     }
 }

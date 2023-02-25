@@ -78,10 +78,10 @@
                         <li class="nav-item d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <form action="{{ route('logout') }}" method="POST" style="display: inline-block">
+                                {{-- <form action="{{ route('logout') }}" method="POST" style="display: inline-block">
                                     @csrf
-                                    <span class="d-sm-inline d-none" onclick="this.parentElement.submit()">Logout</span>
-                                </form>
+                                </form> --}}
+                                <a href="{{url('logout')}}" class="d-sm-inline d-none">Logout</a>
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

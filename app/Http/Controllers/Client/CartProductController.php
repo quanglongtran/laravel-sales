@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Client\CartProduct\CartProductRepositoryInterface;
+use App\Repositories\CartProduct\CartProductRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CartProductController extends Controller
@@ -83,8 +83,8 @@ class CartProductController extends Controller
         if ($request->ajax()) {
             return \jsonResponse(true, $message, $response);
         } else {
-            $notify = notify('Update cart successfully', null, 'success');
-            return \back()->with('withNotify', $notify);
+            \successNotify('Update cart successfully');
+            return \back();
         }
     }
 

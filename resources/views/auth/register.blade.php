@@ -12,8 +12,6 @@
                         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                             @csrf
 
-                            <input type="hidden" name="url_from" value="{{ $url_from ?? null }}">
-
                             <div class="row mb-3 justify-content-center">
                                 <div class="preview col-auto" style="width: 200px; height: 200px; border-radius: 50%"></div>
                             </div>
@@ -103,6 +101,25 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <div class="row mb-0">
+                                <div class="col-md-6 offset-md-4 text-center">
+                                    <p class="mb-3">Already have an account? <a href="{{ url('login') }}"
+                                            class="td-none">Login now</a></p>
+                                    <div>Sign in with</div>
+                                    <div class="group-btn">
+                                        <a href="{{ url('login/google') }}" class="btn btn-social">
+                                            <img src="{{ asset('images/google.png') }}" alt="Google">
+                                            Google
+                                        </a>
+                                        <a href="{{ url('login/github') }}" class="btn btn-social">
+                                            <img src="{{ asset('images/github.png') }}" alt="Github"
+                                                style="width: 24px;">
+                                            Github
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -113,4 +130,40 @@
     <script>
         appendPreviewFrame(document.getElementsByClassName('preview')[0], 'avatar', 'Select an avatar');
     </script>
+@endsection
+
+@section('styles')
+    <style>
+        .group-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-social {
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-social:hover {
+            background-color: #ECECEF;
+            box-shadow: inset 0 0 3px rgb(0, 0, 0);
+        }
+
+        .btn-social img {
+            width: 18px;
+        }
+
+        .td-none {
+            text-decoration: none;
+        }
+
+        .td-none:hover {
+            text-decoration: underline;
+        }
+    </style>
 @endsection

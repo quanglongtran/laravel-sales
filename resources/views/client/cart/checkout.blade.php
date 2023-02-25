@@ -94,7 +94,10 @@
                         <hr class="mt-0">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium total-price">{{ $cart->total_price }}</h6>
+                            {{-- <h6 class="font-weight-medium total-price">{{ $cart->total_price }}</h6> --}}
+                            <h6 class="font-weight-medium total-price">
+                                {{ $cartProduct->product->price * $cartProduct->product_quantity }}
+                            </h6>
 
                         </div>
                         <div class="d-flex justify-content-between">
@@ -129,7 +132,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" checked value="monney" name="payment">
-                                <label class="custom-control-label">Money</label>
+                                <label class="custom-control-label">Cash</label>
                             </div>
                         </div>
 

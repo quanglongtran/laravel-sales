@@ -43,7 +43,5 @@ class UpdateCategory extends FormRequest
             }
             return;
         }
-
-        \notify('Update category successfully', \null, 'success');
     }
 }

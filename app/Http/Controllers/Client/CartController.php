@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartProduct\CreateCartProduct;
 use App\Http\Requests\Order\CreateOrderRequest;
-use App\Repositories\Client\Cart\CartRepositoryInterface;
-use App\Repositories\Client\CartProduct\CartProductRepositoryInterface;
+use App\Repositories\Cart\CartRepositoryInterface;
+use App\Repositories\CartProduct\CartProductRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -55,7 +55,7 @@ class CartController extends Controller
     {
         $this->cartProduct->addToCart($request);
 
-        \notify('Product has been added to your cart', null, 'success');
+        \successNotify('Product has been added to your cart');
         return \to_route('cart.index');
     }
 
@@ -115,7 +115,7 @@ class CartController extends Controller
     {
         $this->cart->checkoutHandle($request);
 
-        \notify('Order Success', null, 'success');
+        \successNotify('Order Success');
         return \to_route('product.index');
     }
 }
