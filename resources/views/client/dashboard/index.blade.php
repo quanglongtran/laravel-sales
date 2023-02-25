@@ -18,13 +18,11 @@
             <h5>{{ $user->name }}</h5>
             <p>New York</p>
         </div>
-        <form class="ms-auto d-flex flex-column" style="width: 150px; margin-top: 183px" action="{{ route('logout') }}"
-            method="POST">
-            @csrf
+        <a class="ms-auto d-flex flex-column d-inline-block text-decoration-none" style="width: 150px; margin: 183px 24px 0 0" href="{{ route('logout') }}">
             <button class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
                 Logout
             </button>
-        </form>
+        </a>
     </div>
     <div class="p-4 text-black" style="background-color: #f8f9fa;">
         <div class="d-flex justify-content-end text-center py-1">

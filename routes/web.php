@@ -32,9 +32,14 @@ use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\SocialAuthController;
 use App\Models\User;
 use App\Jobs\VerifyEmail;
+use App\Models\PasswordReset;
 use Illuminate\Support\Facades\Cookie;
+use App\Repositories\Client\User\UserRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +53,7 @@ use Illuminate\Support\Facades\Cookie;
 */
 
 Route::any('test', function () {
-    return view('auth.passwords.reset');
+    //
 });
 
 Route::get('/', function () {
@@ -62,7 +67,7 @@ Route::group([], function () {
     Route::view('register', 'auth.register')->middleware('guest:web');
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::resource('dashboard', UserController::class)->middleware('auth');
 
@@ -81,6 +86,9 @@ Route::group([], function () {
         Route::get('forgot/callback', [PasswordController::class, 'resetPasswordView'])->name('callback')->middleware('signed');
         Route::patch('update', [PasswordController::class, 'updatePassword'])->name('update');
     });
+
+    Route::get('login/{provider}', [SocialAuthController::class, 'redirectToProvider']);
+    Route::get('social/sign-in/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
 });
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

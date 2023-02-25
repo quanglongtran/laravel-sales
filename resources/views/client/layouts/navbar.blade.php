@@ -58,10 +58,10 @@
                         </div>
                     @else
                         <div class="navbar-nav ml-auto py-0">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <span class="nav-item nav-link" onclick="this.parentElement.submit()">Logout</span>
-                            </form>
+                            </form> --}}
+                            <a href="{{route('logout')}}" class="nav-item nav-link">Logout</a>
                         </div>
                     @endif
                 </div>

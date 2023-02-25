@@ -4,19 +4,17 @@ namespace App\Repositories\Auth;
 
 use App\Jobs\ForgotPassword;
 use App\Jobs\VerifyEmail;
+use App\Models\PasswordReset;
 use App\Models\User;
 use App\Repositories\BaseRepository;
+use App\Repositories\User\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-class PasswordRepository extends BaseRepository implements PasswordRepositoryInterface
+class PasswordRepository extends AuthRepository implements PasswordRepositoryInterface
 {
-    public function getModel()
-    {
-        return User::class;
-    }
 
     public function forgotPasswordHandle($request)
     {
@@ -45,15 +43,17 @@ class PasswordRepository extends BaseRepository implements PasswordRepositoryInt
             'password' => 'required|confirmed',
             'token' => 'required'
         ]);
-
-        // return $request->all();
-
-        $table = DB::table('password_resets')->where('token', $request->token);
-        if (!$table->first()) {
+        
+        $table = PasswordReset::whereToken($request->token)->first();
+        if (!$table) {
             return \abort(403, 'You have not permissions to change');
         }
         
-        DB::table('users')->where('email', $table->first()->email)->update(['password' => \bcrypt($request->password)]);
+        $user = User::where(['email' => $table->email])->first();
+        $user->update(['password' => bcrypt($request->password)]);
+        // $user = User::where('email', $table->email)->first();
+        // $user = $this->update($user->id, ['password' => bcrypt($request->password)]);
         $table->delete();
+        return $user;
     }
 }

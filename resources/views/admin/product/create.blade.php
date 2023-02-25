@@ -160,5 +160,5 @@
 
 @section('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/super-build/ckeditor.js"></script>
-    @vite('resources/js/product/create.js');
+    @vite('resources/js/admin/product/create.js');
 @endsection

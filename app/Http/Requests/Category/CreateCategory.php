@@ -43,7 +43,5 @@ class CreateCategory extends FormRequest
             }
             return;
         }
-
-        \notify('Create category successfully', \null, 'success');
     }
 }

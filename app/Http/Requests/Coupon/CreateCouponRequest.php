@@ -43,7 +43,5 @@ class CreateCouponRequest extends FormRequest
             \validatorFailed($validator->errors()->all());
             return;
         }
-
-        \notify('Create coupon successfully', \null, 'success');
     }
 }

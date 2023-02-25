@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Auth\PasswordRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PasswordController extends Controller
@@ -49,9 +50,10 @@ class PasswordController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $this->password->updatePassword($request);
+        $user = $this->password->updatePassword($request);
 
-        \notify('Reset password successfully');
+        \notify('Set password successfully');
+        Auth::login($user, true);
         return \redirect()->route('dashboard.index');
     }
 }

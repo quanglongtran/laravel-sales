@@ -19,7 +19,7 @@ interface PasswordRepositoryInterface
      * updatePassword
      *
      * @param  \Illuminate\Http\Request $request
-     * @return void
+     * @return \App\Models\User
      */
     public function updatePassword(Request $request);
 }

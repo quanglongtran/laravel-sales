@@ -24,6 +24,8 @@ abstract class BaseRepository implements RepositoryInterface
      */
     protected $modelName;
 
+    protected $query = null;
+
     public function __construct()
     {
         $this->setModel();

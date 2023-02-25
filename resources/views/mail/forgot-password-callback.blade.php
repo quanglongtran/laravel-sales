@@ -10,8 +10,6 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
-
-                            <input type="hidden" name="url_from" value="{{ $url_from ?? null }}">
                             @if (request()->from)
                                 <input type="hidden" name="from" value="{{ request()->from }}">
                             @endif

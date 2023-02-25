@@ -48,7 +48,5 @@ class UpdateProductRequest extends FormRequest
             }
             return;
         }
-
-        \notify('Update product successfully', \null, 'success');
     }
 }

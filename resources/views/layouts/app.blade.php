@@ -19,6 +19,8 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -59,9 +61,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -81,5 +81,6 @@
         </main>
     </div>
     @include('vendor.lara-izitoast.toast')
+    <script src="https://kit.fontawesome.com/b7bb695d24.js" crossorigin="anonymous"></script>
 </body>
 </html>

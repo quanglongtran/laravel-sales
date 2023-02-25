@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Repositories\Admin\Category\CategoryRepositoryInterface;
-use App\Repositories\Admin\Product\ProductRepositoryInterface;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\Product\ProductRepositoryInterface;
 use App\Traits\PermissionMiddleware;
 use Illuminate\Support\Facades\DB;
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
     {
         // return $request->all();
         $this->product->storeProduct($request);
-
+        \successNotify('Successful product listing');
         return \to_route('admin.product.index');
     }
 
@@ -99,7 +99,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $id)
     {
         $this->product->updateProduct($request, $id);
-
+        \successNotify('Successful product editing');
         return \to_route('admin.product.index');
     }
 
@@ -112,7 +112,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $this->product->delete($id, ['details']);
-        \notify('Delete product successfully', null, 'success');
+        \successNotify('Delete product successfully');
 
         return \to_route('admin.product.index');
     }

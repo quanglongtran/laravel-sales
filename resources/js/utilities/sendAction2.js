@@ -54,7 +54,7 @@ class SendAction2 {
                     showCancelButton: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const ifSuccess = (response) => {
+                        const success = (response) => {
                             resolve(response);
                             const key = _.keys(response.data.request)[0];
                             this.setData(key, response.data.request[key]);
@@ -62,7 +62,7 @@ class SendAction2 {
                             this.showSaveBtn(this.data[key]);
                         };
 
-                        const ifError = (response) => {
+                        const error = (response) => {
                             reject(response);
                         };
 
@@ -70,8 +70,8 @@ class SendAction2 {
                             type: "PUT",
                             url: this.url,
                             data: this.data,
-                            success: ifSuccess,
-                            error: ifError,
+                            success,
+                            error,
                         });
                     }
                 });

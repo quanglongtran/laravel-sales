@@ -43,7 +43,5 @@ class UpdateCouponRequest extends FormRequest
             \validatorFailed($validator->errors()->all());
             return;
         }
-
-        \notify('Update coupon successfully', \null, 'success');
     }
 }

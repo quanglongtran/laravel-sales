@@ -242,6 +242,11 @@ CKEDITOR.ClassicEditor.create(document.querySelector("#editor"), {
     ],
 });
 
+$(".deleteInputGroupBtn").on("click", function () {
+    console.log(this);
+    deleteInputGroup($(this));
+});
+
 function deleteInputGroup($this) {
     $this.parent().remove();
 }
@@ -254,29 +259,39 @@ $(".add-input").on("click", function (event) {
     addInputGroup();
 });
 
+for (let i in productDetails) {
+    if (i == 0) continue;
+    addInputGroup(productDetails[i].size, productDetails[i].quantity);
+}
+
 function addInputGroup(size = "", quantity = "") {
     count++;
+    $(".deleteInputGroupBtn").off("click");
     $("[role=form-details]").children(".input-group-form").append(`
-                <div role="group-input-details">
-                    <div class="input-group input-group-outline my-3 ${
-                        size ? "is-filled" : ""
-                    }">
-                        <label class="form-label">Size</label>
-                        <input type="text" class="form-control" onfocus="focused(this)" data-size="${count}"
-                            onfocusout="defocused(this)" value="${size}">
-                    </div>
-                    <div class="input-group input-group-outline my-3 ${
-                        quantity ? "is-filled" : ""
-                    }">
-                        <label class="form-label">Quantity</label>
-                        <input type="number" class="form-control" onfocus="focused(this)" data-quantity="${count}"
-                            onfocusout="defocused(this)" value="${quantity}">
-                    </div>
-                    <div class="btn btn-danger d-flex justify-content-center m-0"
-                        onclick="deleteInputGroup($(this))" style="flex: 1;">x
-                    </div>
-                </div>
-            `);
+        <div role="group-input-details">
+            <div class="input-group input-group-outline my-3 ${
+                size ? "is-filled" : ""
+            }">
+                <label class="form-label">Size</label>
+                <input type="text" class="form-control" onfocus="focused(this)" data-size="${count}"
+                    onfocusout="defocused(this)" value="${size}">
+            </div>
+            <div class="input-group input-group-outline my-3 ${
+                quantity ? "is-filled" : ""
+            }">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" onfocus="focused(this)" data-quantity="${count}"
+                    onfocusout="defocused(this)" value="${quantity}">
+            </div>
+            <div class="btn btn-danger d-flex justify-content-center m-0 deleteInputGroupBtn" style="flex: 1;">x
+            </div>
+        </div>
+    `);
+
+    $('.deleteInputGroupBtn').on('click', function() {
+        console.log(this)
+        deleteInputGroup($(this));
+    })
 }
 
 $("#form-update").on("submit", function () {

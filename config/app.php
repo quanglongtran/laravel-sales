@@ -210,6 +210,10 @@ return [
 
         //RepositoryServiceProvider
         App\Providers\RepositoryServiceProvider::class,
+
+        // SocialiteServiceProvider
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
     ],
 
     /*
@@ -226,7 +230,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Debugbar' => Barryvdh\Debugbar\ServiceProvider::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];

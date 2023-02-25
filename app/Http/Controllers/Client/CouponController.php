@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Client\Coupon\CouponRepositoryInterface;
+use App\Repositories\Coupon\CouponRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller

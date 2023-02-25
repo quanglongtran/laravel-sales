@@ -12,12 +12,18 @@ if (!function_exists('getImage')) {
      */
     function getImage($model, $defaultFolder = '')
     {
+        $pattern = '/[^a-zA-Z0-9&._ -]/';
+        
         if (optional($model->images)->url && file_exists("storage/{$model->images->url}")) {
             return asset("storage/{$model->images->url}");
         }
 
         if ($defaultFolder) {
             return asset("storage/uploads/$defaultFolder/default.jpg");
+        }
+        
+        if (preg_match($pattern, optional($model->images)->url)) {
+            return $model->images->url;
         }
 
         return asset('storage/uploads/default/default.jpg');
@@ -65,3 +71,22 @@ if (!function_exists('redirectPrevRoute')) {
         return back();
     }
 }
+
+if (!function_exists('errorNotify')) {
+    function errorNotify($message) {
+        notify($message, null, 'error');
+    }
+}
+
+if (!function_exists('successNotify')) {
+    function successNotify($message) {
+        notify($message, null, 'success');
+    }
+}
+
+if (!function_exists('myNotify')) {
+    function myNotify(array $data) {
+        notify($data['message'], null, $data['type']);
+    }
+}
+

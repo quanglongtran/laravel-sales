@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Coupon\CreateCouponRequest;
 use App\Http\Requests\Coupon\UpdateCouponRequest;
 use App\Models\Coupon;
-use App\Repositories\Admin\Coupon\CouponRepositoryInterface;
+use App\Repositories\Coupon\CouponRepositoryInterface;
 use App\Traits\PermissionMiddleware;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,7 +54,7 @@ class CouponController extends Controller
     public function store(CreateCouponRequest $request)
     {
         $this->coupon->create($request->all());
-
+        \successNotify('Successfully generated coupon');
         return redirect(route('admin.coupon.index'));
     }
 
@@ -92,7 +92,7 @@ class CouponController extends Controller
     public function update(UpdateCouponRequest $request, $id)
     {
         $this->coupon->update($id, $request->all());
-
+        \successNotify('Update coupon successfully');
         return redirect(route('admin.coupon.index'));
     }
 
@@ -105,7 +105,7 @@ class CouponController extends Controller
     public function destroy($id)
     {
         $this->coupon->delete($id);
-        \notify('Delete coupon successfully', null, 'success');
+        \successNotify('Delete coupon successfully');
         return redirect(route('admin.coupon.index'));
     }
 }
